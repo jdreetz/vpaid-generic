@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Javascript VPAID example</title>
+  <style type="text/css">
+    #mainContainer {
+      position: relative;
+      width: 640px;
+      height: 360px;
+    }
+
+    #content, #adContainer {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 640px;
+      height: 360px;
+    }
+
+    #contentElement {
+      width: 640px;
+      height: 360px;
+      overflow: hidden;
+    }
+
+    #playButton {
+      margin-top:10px;
+      vertical-align: top;
+      width: 350px;
+      height: 60px;
+      padding: 0;
+      font-size: 22px;
+      color: white;
+      text-align: center;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+      background: #2c3e50;
+      border: 0;
+      border-bottom: 2px solid #22303f;
+      cursor: pointer;
+      -webkit-box-shadow: inset 0 -2px #22303f;
+      box-shadow: inset 0 -2px #22303f;
+    }
+  </style>
+</head>
+<body>
+  <div id="mainContainer">
+    <div id="content">
+      <video id="contentElement">
+        <source src="http://rmcdn.2mdn.net/Demo/vast_inspector/android.mp4"></source>
+        <source src="http://rmcdn.2mdn.net/Demo/vast_inspector/android.webm"></source>
+      </video>
+    </div>
+    <div id="adContainer"></div>
+  </div>
+  <button id="playButton">Play</button>
+  <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+  <script type="text/javascript">
+    var adsManager;
+    var adsLoader;
+    var adDisplayContainer;
+    var intervalTimer;
+    var playButton;
+    var videoContent;
+
+    function init() {
+      videoContent = document.getElementById('contentElement');
+      playButton = document.getElementById('playButton');
+      playButton.addEventListener('click', playAds);
+      setUpIMA();
+    }
+
+    function setUpIMA() {
+      createAdDisplayContainer();
+      adsLoader = new google.ima.AdsLoader(adDisplayContainer);
+      adsLoader.addEventListener(
+          google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+          onAdsManagerLoaded,
+          false);
+      adsLoader.addEventListener(
+          google.ima.AdErrorEvent.Type.AD_ERROR,
+          onAdError,
+          false);
+
+      var contentEndedListener = function() {adsLoader.contentComplete();};
+      videoContent.onended = contentEndedListener;
+
+      // Request video ads.
+      var adsRequest = new google.ima.AdsRequest();
+      adsRequest.adTagUrl = 'ad-tag.xml';
+      adsRequest.linearAdSlotWidth = 640;
+      adsRequest.linearAdSlotHeight = 400;
+
+      adsRequest.nonLinearAdSlotWidth = 640;
+      adsRequest.nonLinearAdSlotHeight = 150;
+
+      adsLoader.requestAds(adsRequest);
+    }
+
+
+    function createAdDisplayContainer() {
+      adDisplayContainer = new google.ima.AdDisplayContainer(
+          document.getElementById('adContainer'), videoContent);
+    }
+
+    function playAds() {
+      videoContent.load();
+      adDisplayContainer.initialize();
+
+      try {
+        adsManager.init(640, 360, google.ima.ViewMode.NORMAL);
+        adsManager.start();
+      } catch (adError) {
+        videoContent.play();
+      }
+    }
+
+    function onAdsManagerLoaded(adsManagerLoadedEvent) {
+      // Get the ads manager.
+      var adsRenderingSettings = new google.ima.AdsRenderingSettings();
+      adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
+      // videoContent should be set to the content video element.
+      adsManager = adsManagerLoadedEvent.getAdsManager(
+          videoContent, adsRenderingSettings);
+
+      // Add listeners to the required events.
+      adsManager.addEventListener(
+          google.ima.AdErrorEvent.Type.AD_ERROR,
+          onAdError);
+      adsManager.addEventListener(
+          google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED,
+          onContentPauseRequested);
+      adsManager.addEventListener(
+          google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED,
+          onContentResumeRequested);
+      adsManager.addEventListener(
+          google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
+          onAdEvent);
+
+      // Listen to any additional events, if necessary.
+      adsManager.addEventListener(
+          google.ima.AdEvent.Type.LOADED,
+          onAdEvent);
+      adsManager.addEventListener(
+          google.ima.AdEvent.Type.STARTED,
+          onAdEvent);
+      adsManager.addEventListener(
+          google.ima.AdEvent.Type.COMPLETE,
+          onAdEvent);
+    }
+
+    function onAdEvent(adEvent) {
+      var ad = adEvent.getAd();
+      switch (adEvent.type) {
+        case google.ima.AdEvent.Type.LOADED:
+        if (!ad.isLinear()) {
+            videoContent.play();
+          }
+          break;
+        case google.ima.AdEvent.Type.STARTED:
+          if (ad.isLinear()) {
+            intervalTimer = setInterval(
+                function() {
+                  var remainingTime = adsManager.getRemainingTime();
+                },
+                300); // every 300ms
+          }
+          break;
+        case google.ima.AdEvent.Type.COMPLETE:
+          if (ad.isLinear()) {
+            clearInterval(intervalTimer);
+          }
+          break;
+      }
+    }
+
+    function onAdError(adErrorEvent) {
+      console.log(adErrorEvent.getError());
+      adsManager.destroy();
+    }
+
+    function onContentPauseRequested() {
+      videoContent.pause();
+    }
+
+    function onContentResumeRequested() {
+      videoContent.play();
+
+    }
+
+    init();
+  </script>
+</body>
+</html>
