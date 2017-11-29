@@ -22,6 +22,6 @@
     "babel-preset-stage-2": "^6.24.1"
   },
   "dependencies": {
-    "pubsub-js": "^1.5.7"
+    "PubSub": "^3.4.0"
   }
 }

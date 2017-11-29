@@ -10,11 +10,7 @@
       <Linear>
         <Duration>00:00:30</Duration>
         <AdParameters>
-          <![CDATA[
-            {
-              videoURL: 'https://cdn.visiblemeasures.com/ad_assets/p/c3420/512/Demo_Nike-SnowDay.mp4'
-            }
-          ]]>
+          <![CDATA[ { videoURL: 'https://cdn.visiblemeasures.com/ad_assets/p/c3420/512/Demo_Nike-SnowDay.mp4' } ]]>
         </AdParameters>
         <MediaFiles>
           <MediaFile apiFramework="VPAID" width="640" height="360" type="application/javascript" delivery="progressive">index.bundle.js</MediaFile>

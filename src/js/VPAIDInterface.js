@@ -1,5 +1,5 @@
 import Subscribeable from './Subscribeable';
-import VPAIDEvents from './VPAIDEvents';
+import * as VPAIDEvents from './VPAIDEvents';
 import VideoAd from './VideoAd';
 
 export default class VPAIDInterface extends Subscribeable {
@@ -23,11 +23,11 @@ export default class VPAIDInterface extends Subscribeable {
         this.ad = new VideoAd(environmentVars.videoSlot, AdParameters.videoURL);
         
         this.ad
-          .subscribe(VPAIDEvents.AD_REMAINING_TIME_CHANGE, this.publish)
-          .subscribe(VPAIDEvents.AD_VIDEO_FIRST_QUARTILE, this.publish)
-          .subscribe(VPAIDEvents.AD_VIDEO_THIRD_QUARTILE, this.publish)
-          .subscribe(VPAIDEvents.AD_VIDEO_MIDPOINT, this.publish)
-          .subscribe(VPAIDEvents.AD_VIDEO_COMPLETE, this.publish);
+          .subscribe(this.publish, VPAIDEvents.AD_REMAINING_TIME_CHANGE, this)
+          .subscribe(this.publish, VPAIDEvents.AD_VIDEO_FIRST_QUARTILE, this)
+          .subscribe(this.publish, VPAIDEvents.AD_VIDEO_THIRD_QUARTILE, this)
+          .subscribe(this.publish, VPAIDEvents.AD_VIDEO_MIDPOINT, this)
+          .subscribe(this.publish, VPAIDEvents.AD_VIDEO_COMPLETE, this);
       }
 
     } catch(e) {

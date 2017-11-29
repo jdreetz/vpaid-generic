@@ -1,5 +1,5 @@
 import Subscribeable from './Subscribeable';
-import VPAIDEvents from './VPAIDEvents';
+import * as VPAIDEvents from './VPAIDEvents';
 
 export default class VideoAd extends Subscribeable {
   constructor(videoEl, URL) {
@@ -16,6 +16,7 @@ export default class VideoAd extends Subscribeable {
       this.videoEl.addEventListener('timeupdate', this.onTimeUpdate);
       this.videoEl.autoplay = true;
       this.videoEl.src = URL;
+      this.videoEl.play();
       
       this.quartiles_fired = {
         first:    false, 
@@ -34,7 +35,8 @@ export default class VideoAd extends Subscribeable {
   }
 
   onTimeUpdate() {
-    if(typeof this.duration !== 'undefined') {
+    console.log('onTimeUpdate', this.videoEl.currentTime);
+    if(typeof this.duration !== 'undefined' && this.duration > 0) {
       const quartile = this.duration / 4;
 
       if(this.videoEl.currentTime > quartile && !this.quartiles_fired.first) {
@@ -55,6 +57,7 @@ export default class VideoAd extends Subscribeable {
       if(this.videoEl.currentTime >= this.duration && !this.quartiles_fired.complete) {
         this.quartiles_fired.complete = true;
         this.publish(VPAIDEvents.AD_VIDEO_COMPLETE);
+        return;
       }
 
       this.remaining = this.duration - this.videoEl.currentTime;
