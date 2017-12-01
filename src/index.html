@@ -77,30 +77,7 @@
 
       // Request video ads.
       var adsRequest = new google.ima.AdsRequest();
-      adsRequest.adsResponse = 
-        '<?xml version="1.0" encoding="UTF-8"?>' +
-        '<VAST version="2.0">' +
-        '  <Ad id="601364">' +
-        '  <InLine>' +
-        '    <AdSystem>Acudeo Compatible</AdSystem>' +
-        '    <AdTitle>VAST 2.0 Instream Test 1</AdTitle>' +
-        '    <Description>VAST 2.0 Instream Test 1</Description>' +
-        '  <Creatives>' +
-        '    <Creative AdID="601364">' +
-        '      <Linear>' +
-        '        <Duration>00:00:30</Duration>' +
-        '        <AdParameters>' +
-        '          <![CDATA[ { "videoURL": "https://cdn.visiblemeasures.com/ad_assets/p/c3420/512/Demo_Nike-SnowDay.mp4" } ]]>' +
-        '        </AdParameters>' +
-        '        <MediaFiles>' +
-        '          <MediaFile apiFramework="VPAID" width="640" height="360" type="application/javascript" delivery="progressive">http://localhost:8080/index.bundle.js</MediaFile>' +
-        '        </MediaFiles>' +
-        '      </Linear>' +
-        '    </Creative>' +
-        '  </Creatives>' +
-        '  </InLine>' +
-        '  </Ad>' +
-        ' </VAST>';
+      adsRequest.adsResponse = '<?xml version="1.0" encoding="UTF-8"?> <VAST version="2.0"> <Ad id="601364"> <InLine> <AdSystem>Acudeo Compatible</AdSystem> <AdTitle>VAST 2.0 Instream Test 1</AdTitle> <Description>VAST 2.0 Instream Test 1</Description> <Creatives> <Creative AdID="601364"> <Linear> <Duration>00:00:30</Duration> <AdParameters> <![CDATA[ {"videoURL": "https://cdn.visiblemeasures.com/ad_assets/p/c5899/3/12-Enjoy Your Drink_KY Online.mp4", "clickThrough": "http://www.yahoo.com/"} ]]> </AdParameters> <MediaFiles> <MediaFile apiFramework="VPAID" width="640" height="360" type="application/javascript" delivery="progressive">http://localhost:8080/index.bundle.js</MediaFile> </MediaFiles> </Linear> </Creative> </Creatives> </InLine> </Ad> </VAST>';
 
       adsRequest.linearAdSlotWidth = 640;
       adsRequest.linearAdSlotHeight = 400;
@@ -142,13 +119,15 @@
       adsManager.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, onAdEvent);
 
       // Listen to any additional events, if necessary.
+      adsManager.addEventListener(google.ima.AdEvent.Type.CLICK, onAdEvent);
       adsManager.addEventListener(google.ima.AdEvent.Type.LOADED, onAdEvent);
       adsManager.addEventListener(google.ima.AdEvent.Type.STARTED, onAdEvent);
       adsManager.addEventListener(google.ima.AdEvent.Type.PROGRESS, onAdEvent);
-      adsManager.addEventListener(google.ima.AdEvent.Type.FIRST_QUARTILE, onAdEvent);
-      adsManager.addEventListener(google.ima.AdEvent.Type.MIDPOINT, onAdEvent);
-      adsManager.addEventListener(google.ima.AdEvent.Type.THIRD_QUARTILE, onAdEvent);
       adsManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, onAdEvent);
+      adsManager.addEventListener(google.ima.AdEvent.Type.MIDPOINT, onAdEvent);
+      adsManager.addEventListener(google.ima.AdEvent.Type.FIRST_QUARTILE, onAdEvent);
+      adsManager.addEventListener(google.ima.AdEvent.Type.THIRD_QUARTILE, onAdEvent);
+      adsManager.addEventListener(google.ima.AdEvent.Type.DURATION_CHANGE, onAdEvent);
     }
 
     function onAdEvent(adEvent) {

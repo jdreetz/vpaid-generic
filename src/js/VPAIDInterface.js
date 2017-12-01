@@ -1,10 +1,14 @@
 import Subscribeable from './Subscribeable';
 import * as VPAIDEvents from './VPAIDEvents';
+
+import SimpleControls from './SimpleControls';
 import VideoAd from './VideoAd';
 
 export default class VPAIDInterface extends Subscribeable {
-  constructor() {
+  constructor({ creativeFormat = VideoAd, overlays = SimpleControls }) {
     super();
+    this.AdCreativeType = creativeFormat;
+    this.OverlayType = overlays;
     this.expanded = false;
     this.size = { width: 640, height: 360 };
   }
@@ -19,16 +23,23 @@ export default class VPAIDInterface extends Subscribeable {
     try {
       const AdParameters = JSON.parse(creativeData.AdParameters);
 
-      if(AdParameters.videoURL) {
-        this.ad = new VideoAd(environmentVars.videoSlot, AdParameters.videoURL);
+      this.ad = new this.AdCreativeType(environmentVars.videoSlot, AdParameters.videoURL);
+      this.overlays = new this.OverlayType(environmentVars.slot, AdParameters.clickThrough);
         
-        this.ad
-          .subscribe(this.publish, VPAIDEvents.AD_REMAINING_TIME_CHANGE, this)
-          .subscribe(this.publish, VPAIDEvents.AD_VIDEO_FIRST_QUARTILE, this)
-          .subscribe(this.publish, VPAIDEvents.AD_VIDEO_THIRD_QUARTILE, this)
-          .subscribe(this.publish, VPAIDEvents.AD_VIDEO_MIDPOINT, this)
-          .subscribe(this.publish, VPAIDEvents.AD_VIDEO_COMPLETE, this);
-      }
+      // Pass VPAID events from creative to host player
+      this.ad
+        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_REMAINING_TIME_CHANGE), VPAIDEvents.AD_REMAINING_TIME_CHANGE)
+        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_VIDEO_FIRST_QUARTILE), VPAIDEvents.AD_VIDEO_FIRST_QUARTILE)
+        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_VIDEO_THIRD_QUARTILE), VPAIDEvents.AD_VIDEO_THIRD_QUARTILE)
+        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_DURATION_CHANGE), VPAIDEvents.AD_DURATION_CHANGE)
+        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_VIDEO_MIDPOINT), VPAIDEvents.AD_VIDEO_MIDPOINT)
+        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_VIDEO_COMPLETE), VPAIDEvents.AD_VIDEO_COMPLETE)
+        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_CLICK_THRU), VPAIDEvents.AD_CLICK_THRU)
+        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_STOPPED), VPAIDEvents.AD_STOPPED);
+      this.overlays
+        .subscribe(this.onOverlayEvent.bind(this, VPAIDEvents.AD_CLICK_THRU), VPAIDEvents.AD_CLICK_THRU)
+        .subscribe(this.onOverlayEvent.bind(this, VPAIDEvents.AD_PLAYING), VPAIDEvents.AD_PLAYING)
+        .subscribe(this.onOverlayEvent.bind(this, VPAIDEvents.AD_PAUSED), VPAIDEvents.AD_PAUSED);
 
     } catch(e) {
       console.log(e);
@@ -36,6 +47,16 @@ export default class VPAIDInterface extends Subscribeable {
 
     this.publish(VPAIDEvents.AD_LOADED);
     return this;
+  }
+
+  onCreativeEvent(name) {
+    console.log('onCreativeEvent', name);
+    this.publish(name);
+  }
+
+  onOverlayEvent(name) {
+    console.log('onOverlayEvent', name);
+    this.publish(name);
   }
 
   startAd() {

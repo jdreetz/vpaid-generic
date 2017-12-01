@@ -6,7 +6,6 @@ export default class Subscribeable {
   }
 
   subscribe(fn, event, listenerScope) {
-    console.log('subscribe', arguments);
     this.pubsub.subscribe(event, fn.bind(listenerScope));
     return this;
   }
@@ -17,7 +16,6 @@ export default class Subscribeable {
   }
 
   publish(event, args) {
-    console.log('publish', arguments);
     this.pubsub.publish(event, args);
     return this;
   }
