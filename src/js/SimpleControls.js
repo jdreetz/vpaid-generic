@@ -1,7 +1,9 @@
+import { ClassValidator } from './Utils';
+
 import Subscribeable from './Subscribeable';
 import * as VPAIDEvents from './VPAIDEvents';
 
-export default class BasicControls extends Subscribeable {
+export default class SimpleControls extends Subscribeable {
   constructor(slotEl, clickThroughURL) {
     super();
 
@@ -30,3 +32,5 @@ export default class BasicControls extends Subscribeable {
     return document.createDocumentFragment();
   }
 }
+
+SimpleControls.ValidAlternative = ClassValidator(SimpleControls);

@@ -1,3 +1,4 @@
+import { ClassValidator } from './Utils';
 import Subscribeable from './Subscribeable';
 import * as VPAIDEvents from './VPAIDEvents';
 
@@ -84,3 +85,5 @@ export default class VideoAd extends Subscribeable {
     }
   }
 }
+
+VideoAd.ValidAlternative = ClassValidator(VideoAd);

@@ -5,10 +5,29 @@ import SimpleControls from './SimpleControls';
 import VideoAd from './VideoAd';
 
 export default class VPAIDInterface extends Subscribeable {
-  constructor({ creativeFormat = VideoAd, overlays = SimpleControls }) {
+  constructor(params = {}) {
     super();
-    this.AdCreativeType = creativeFormat;
-    this.OverlayType = overlays;
+
+    if(params.creativeFormat) {
+      if(VideoAd.ValidAlternative(params.creativeFormat)) {
+        this.AdCreativeType = params.creativeFormat;
+      } else {
+        throw 'Fatal Error - invalid creativeFormat supplied';
+      }
+    } else {
+      this.AdCreativeType = VideoAd;
+    }
+
+    if(params.overlays) {
+      if(SimpleControls.ValidAlternative(params.overlays)) {
+        this.OverlayType = params.overlays;
+      } else {
+        throw 'Fatal Error = invalid overlays supplied';
+      }
+    } else {
+      this.OverlayType = SimpleControls;
+    }
+
     this.expanded = false;
     this.size = { width: 640, height: 360 };
   }
@@ -63,14 +82,11 @@ export default class VPAIDInterface extends Subscribeable {
     this.publish(VPAIDEvents.AD_IMPRESSION);
     this.publish(VPAIDEvents.AD_STARTED);
     this.publish(VPAIDEvents.AD_VIDEO_START);
+    this.publish(VPAIDEvents.AD_SKIPPABLE_STATE_CHANGE);
     return this;
   }
 
   skipAd() {
-    if(this.ad) {
-      this.ad.destroy();
-    }
-
     this.publish(VPAIDEvents.AD_SKIPPED);
     return this;
   }
