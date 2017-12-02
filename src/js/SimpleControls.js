@@ -21,31 +21,12 @@ export default class BasicControls extends Subscribeable {
   }
 
   onClick(event) {
+    event.preventDefault();
     this.publish(VPAIDEvents.AD_CLICK_THRU);
     window.open(this.clickThroughURL, '_blank');
   }
 
-  onPlay(event) {
-    event.preventDefault();
-    this.publish(VPAIDEvents.AD_PAUSED);
-  }
-
-  onPause(event) {
-    event.preventDefault();
-    this.publish(VPAIDEvents.AD_PLAYING);
-  }
-
   generateControls() {
-    const placeholder = document.createDocumentFragment(), 
-          play        = document.createElement('a'),
-          pause       = document.createElement('a');
-
-    play.innerHTML = 'Play';
-    play.addEventListener('click', this.onPlay.bind(this));
-
-    pause.innerHTML = 'Pause';
-    pause.addEventListener('click', this.onPause.bind(this));
-    placeholder.appendChild(play).appendChild(pause);
-    return placeholder;
+    return document.createDocumentFragment();
   }
 }

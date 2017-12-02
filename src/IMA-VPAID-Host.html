@@ -57,7 +57,7 @@
   <button id="playButton">Play</button>
   <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
   <script type="text/javascript">
-    var adsManager, adsLoader, adDisplayContainer, intervalTimer, playButton, videoContent;
+    var adsManager, adsLoader, adDisplayContainer, intervalTimer, playButton, videoContent, adInit = false, adLoaded = false, adStarted = false;
 
     function init() {
       videoContent = document.getElementById('contentElement');
@@ -77,7 +77,7 @@
 
       // Request video ads.
       var adsRequest = new google.ima.AdsRequest();
-      adsRequest.adsResponse = '<?xml version="1.0" encoding="UTF-8"?> <VAST version="2.0"> <Ad id="601364"> <InLine> <AdSystem>Acudeo Compatible</AdSystem> <AdTitle>VAST 2.0 Instream Test 1</AdTitle> <Description>VAST 2.0 Instream Test 1</Description> <Creatives> <Creative AdID="601364"> <Linear> <Duration>00:00:30</Duration> <AdParameters> <![CDATA[ {"videoURL": "https://cdn.visiblemeasures.com/ad_assets/p/c5899/3/12-Enjoy Your Drink_KY Online.mp4", "clickThrough": "http://www.yahoo.com/"} ]]> </AdParameters> <MediaFiles> <MediaFile apiFramework="VPAID" width="640" height="360" type="application/javascript" delivery="progressive">http://localhost:8080/index.bundle.js</MediaFile> </MediaFiles> </Linear> </Creative> </Creatives> </InLine> </Ad> </VAST>';
+      adsRequest.adsResponse = '<?xml version="1.0" encoding="UTF-8"?> <VAST version="2.0"> <Ad id="601364"> <InLine> <AdSystem>Acudeo Compatible</AdSystem> <AdTitle>VAST 2.0 Instream Test 1</AdTitle> <Description>VAST 2.0 Instream Test 1</Description> <Creatives> <Creative AdID="601364"> <Linear> <Duration>00:00:30</Duration> <AdParameters> <![CDATA[ {"videoURL": "http://cdn.visiblemeasures.com/ad_assets/p/c5899/3/12-Enjoy Your Drink_KY Online.mp4", "clickThrough": "http://www.yahoo.com/"} ]]> </AdParameters> <MediaFiles> <MediaFile apiFramework="VPAID" width="640" height="360" type="application/javascript" delivery="progressive">http://localhost:8080/index.bundle.js</MediaFile> </MediaFiles> </Linear> </Creative> </Creatives> </InLine> </Ad> </VAST>';
 
       adsRequest.linearAdSlotWidth = 640;
       adsRequest.linearAdSlotHeight = 400;
@@ -97,12 +97,21 @@
       videoContent.load();
       adDisplayContainer.initialize();
 
-      try {
-        adsManager.init(640, 360, google.ima.ViewMode.NORMAL);
-        adsManager.start();
-      } catch (adError) {
-        videoContent.play();
+      if(!adInit && !adLoaded && !adStarted) {
+        try {
+          adsManager.init(640, 360, google.ima.ViewMode.NORMAL);
+          adsManager.start();
+          adInit = true;
+        } catch (adError) {
+          videoContent.play();
+        }
+      } else if(playButton.innerHTML == 'Play') {
+        adsManager.resume();
+      } else if(playButton.innerHTML == 'Pause') {
+        adsManager.pause();
       }
+
+      playButton.innerHTML = playButton.innerHTML == 'Play' ? 'Pause' : 'Play';
     }
 
     function onAdsManagerLoaded(adsManagerLoadedEvent) {
@@ -136,11 +145,13 @@
       switch (adEvent.type) {
         case google.ima.AdEvent.Type.LOADED:
         if (!ad.isLinear()) {
+            adLoaded = true;
             videoContent.play();
           }
           break;
         case google.ima.AdEvent.Type.STARTED:
           if (ad.isLinear()) {
+            adStarted = true;
             intervalTimer = setInterval(
                 function() {
                   var remainingTime = adsManager.getRemainingTime();

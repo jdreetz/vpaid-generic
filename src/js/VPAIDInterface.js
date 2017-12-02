@@ -86,7 +86,7 @@ export default class VPAIDInterface extends Subscribeable {
 
   pauseAd() {
     if(this.ad) {
-      this.ad.pause();
+      this.ad.videoEl.pause();
     }
 
     this.publish(VPAIDEvents.AD_PAUSED);
@@ -95,7 +95,7 @@ export default class VPAIDInterface extends Subscribeable {
 
   resumeAd() {
     if(this.ad) {
-      this.ad.play();
+      this.ad.videoEl.play();
     }
 
     this.publish(VPAIDEvents.AD_PLAYING);

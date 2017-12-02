@@ -15,7 +15,7 @@ module.exports = {
     filename: 'index.bundle.js'
   },
   plugins: [ 
-    new HTMLWebpackPlugin({ template: path.join(paths.SRC, 'index.html') }),
+    new HTMLWebpackPlugin({ template: path.join(paths.SRC, 'IMA-VPAID-Host.html') }),
     new ExtractTextPlugin('style.bundle.css')
   ],
   module: {
