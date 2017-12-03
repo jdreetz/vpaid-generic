@@ -1,12 +1,10 @@
-import { ClassValidator } from './Utils';
-
-import Subscribeable from './Subscribeable';
+import { Observable, Listenable } from './Behaviors';
 import * as VPAIDEvents from './VPAIDEvents';
 
-export default class SimpleControls extends Subscribeable {
-  constructor(slotEl, clickThroughURL) {
-    super();
 
+// Simple overlay class. Handles clicks. Can be overriden to provide more complicated user interface
+class SimpleControls {
+  constructor(slotEl, clickThroughURL) {
     if(typeof slotEl != 'undefined') {
       this.slotEl = slotEl;
 
@@ -15,7 +13,7 @@ export default class SimpleControls extends Subscribeable {
 
       if(clickThroughURL) {
         this.clickThroughURL = clickThroughURL;
-        slotEl.addEventListener('click', this.onClick.bind(this));
+        this.registerListener(slotEl, 'click', this.onClick, this);
       }
     } else {
       throw 'Fatal Error - slot element not provided';
@@ -28,9 +26,17 @@ export default class SimpleControls extends Subscribeable {
     window.open(this.clickThroughURL, '_blank');
   }
 
+  // override this if you want to inject custom overlay elements
   generateControls() {
     return document.createDocumentFragment();
   }
+
+  destroy() {
+    this.unregisterAll();
+  }
 }
 
-SimpleControls.ValidAlternative = ClassValidator(SimpleControls);
+SimpleControls = Observable(SimpleControls);
+SimpleControls = Listenable(SimpleControls);
+
+export default SimpleControls;

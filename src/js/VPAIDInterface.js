@@ -1,32 +1,15 @@
-import Subscribeable from './Subscribeable';
+import { Observable, Listenable } from './Behaviors';
 import * as VPAIDEvents from './VPAIDEvents';
 
 import SimpleControls from './SimpleControls';
 import VideoAd from './VideoAd';
 
-export default class VPAIDInterface extends Subscribeable {
+// Implements the required VPAID interface methods and properties as per the VPAID 2.0 specification 
+// http://www.iab.net/media/file/VPAID_2.0_Final_04-10-2012.pdf
+class VPAIDInterface {
   constructor(params = {}) {
-    super();
-
-    if(params.creativeFormat) {
-      if(VideoAd.ValidAlternative(params.creativeFormat)) {
-        this.AdCreativeType = params.creativeFormat;
-      } else {
-        throw 'Fatal Error - invalid creativeFormat supplied';
-      }
-    } else {
-      this.AdCreativeType = VideoAd;
-    }
-
-    if(params.overlays) {
-      if(SimpleControls.ValidAlternative(params.overlays)) {
-        this.OverlayType = params.overlays;
-      } else {
-        throw 'Fatal Error = invalid overlays supplied';
-      }
-    } else {
-      this.OverlayType = SimpleControls;
-    }
+    this.AdCreativeType = params.creativeFormat || VideoAd;
+    this.OverlayType = params.overlays || SimpleControls;
 
     this.expanded = false;
     this.size = { width: 640, height: 360 };
@@ -40,12 +23,14 @@ export default class VPAIDInterface extends Subscribeable {
     this.environmentVars = { ...environmentVars };
 
     try {
+      // expected AdParameter format
+      // videoURL: 'url of the video to play'
+      // clickThrough: 'url of location to navigate to on click of slot element'
       const AdParameters = JSON.parse(creativeData.AdParameters);
 
       this.ad = new this.AdCreativeType(environmentVars.videoSlot, AdParameters.videoURL);
       this.overlays = new this.OverlayType(environmentVars.slot, AdParameters.clickThrough);
         
-      // Pass VPAID events from creative to host player
       this.ad
         .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_REMAINING_TIME_CHANGE), VPAIDEvents.AD_REMAINING_TIME_CHANGE)
         .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_VIDEO_FIRST_QUARTILE), VPAIDEvents.AD_VIDEO_FIRST_QUARTILE)
@@ -55,10 +40,9 @@ export default class VPAIDInterface extends Subscribeable {
         .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_VIDEO_COMPLETE), VPAIDEvents.AD_VIDEO_COMPLETE)
         .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_CLICK_THRU), VPAIDEvents.AD_CLICK_THRU)
         .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_STOPPED), VPAIDEvents.AD_STOPPED);
+
       this.overlays
-        .subscribe(this.onOverlayEvent.bind(this, VPAIDEvents.AD_CLICK_THRU), VPAIDEvents.AD_CLICK_THRU)
-        .subscribe(this.onOverlayEvent.bind(this, VPAIDEvents.AD_PLAYING), VPAIDEvents.AD_PLAYING)
-        .subscribe(this.onOverlayEvent.bind(this, VPAIDEvents.AD_PAUSED), VPAIDEvents.AD_PAUSED);
+        .subscribe(this.onOverlayEvent.bind(this, VPAIDEvents.AD_CLICK_THRU), VPAIDEvents.AD_CLICK_THRU);
 
     } catch(e) {
       console.log(e);
@@ -69,12 +53,10 @@ export default class VPAIDInterface extends Subscribeable {
   }
 
   onCreativeEvent(name) {
-    console.log('onCreativeEvent', name);
     this.publish(name);
   }
 
   onOverlayEvent(name) {
-    console.log('onOverlayEvent', name);
     this.publish(name);
   }
 
@@ -188,3 +170,8 @@ export default class VPAIDInterface extends Subscribeable {
     }
   }
 }
+
+VPAIDInterface = Observable(VPAIDInterface);
+VPAIDInterface = Listenable(VPAIDInterface);
+
+export default VPAIDInterface;

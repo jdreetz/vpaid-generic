@@ -1,3 +1,5 @@
+
+// WIP class interface validator. Thinking about using https://www.npmjs.com/package/contracts-es6, but maybe overkill
 // A valid alternative to the base class class is either
 // a class that inherits from the base class or
 // a class that implements the same methods and has the same properties of the base class

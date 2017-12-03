@@ -1,18 +1,13 @@
-import { ClassValidator } from './Utils';
-import Subscribeable from './Subscribeable';
+import { Observable, Listenable } from './Behaviors';
 import * as VPAIDEvents from './VPAIDEvents';
 
-export default class VideoAd extends Subscribeable {
+class VideoAd {
   constructor(videoEl, sourceURL) {
-    super();
-    this.onLoadedMetaData = this.onLoadedMetaData.bind(this);
-    this.onTimeUpdate = this.onTimeUpdate.bind(this);
-
     if(videoEl && sourceURL) {
       this.videoEl = videoEl;
       this.sourceURL = sourceURL;
-      this.videoEl.addEventListener('loadedmetadata', this.onLoadedMetaData);
-      this.videoEl.addEventListener('timeupdate', this.onTimeUpdate);
+      this.registerListener(this.videoEl, 'loadedmetadata', this.onLoadedMetaData, this);
+      this.registerListener(this.videoEl, 'timeupdate', this.onTimeUpdate, this);
       this.videoEl.autoplay = true;
       this.videoEl.src = sourceURL;
       this.videoEl.play();
@@ -79,11 +74,12 @@ export default class VideoAd extends Subscribeable {
   destory() {
     if(this.videoEl) {
       this.videoEl.pause();
-      this.videoEl.removeEventListener('click', this.onClickThrough);
-      this.videoEl.removeEventListener('loadedmetadata', this.onLoadedMetaData);
-      this.videoEl.removeEventListener('timeupdate', this.onTimeUpdate);
+      this.unregisterAll();
     }
   }
 }
 
-VideoAd.ValidAlternative = ClassValidator(VideoAd);
+VideoAd = Observable(VideoAd);
+VideoAd = Listenable(VideoAd);
+
+export default VideoAd;
