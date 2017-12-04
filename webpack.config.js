@@ -9,10 +9,13 @@ const paths = {
 };
 
 module.exports = {
-  entry: path.join(paths.JS, 'index.js'),
+  entry: { 
+    index: path.join(paths.JS, 'index.js'),
+    demo: path.join(paths.JS, 'demo.js')
+  },
   output: {
     path: paths.DIST,
-    filename: 'index.bundle.js'
+    filename: '[name].bundle.js'
   },
   plugins: [ 
     new HTMLWebpackPlugin({ template: path.join(paths.SRC, 'IMA-VPAID-Host.html') }),

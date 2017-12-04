@@ -2,14 +2,14 @@ import { Observable, Listenable } from './Behaviors';
 import * as VPAIDEvents from './VPAIDEvents';
 
 class VideoAd {
-  constructor(videoEl, sourceURL) {
-    if(videoEl && sourceURL) {
+  constructor(videoEl, { videoURL }, parentInterface) {
+    if(videoEl && videoURL) {
       this.videoEl = videoEl;
-      this.sourceURL = sourceURL;
+      this.videoURL = videoURL;
       this.registerListener(this.videoEl, 'loadedmetadata', this.onLoadedMetaData, this);
       this.registerListener(this.videoEl, 'timeupdate', this.onTimeUpdate, this);
       this.videoEl.autoplay = true;
-      this.videoEl.src = sourceURL;
+      this.videoEl.src = videoURL;
       this.videoEl.play();
       
       this.quartiles_fired = {
@@ -20,7 +20,7 @@ class VideoAd {
       };
 
     } else {
-      throw 'Fatal Error - videoElement or sourceURL not provided';
+      throw 'Fatal Error - videoElement or videoURL not provided';
     }
   }
 
@@ -29,7 +29,7 @@ class VideoAd {
   }
 
   get remaining() {
-    return this.videoEl.duration ? this.videoEl.currentTime - this.videoEl.duration : -2;
+    return this.videoEl.duration ? this.videoEl.duration - this.videoEl.currentTime : -2;
   }
 
   onLoadedMetaData() {

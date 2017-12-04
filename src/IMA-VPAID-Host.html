@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width">
   <title>Javascript VPAID example</title>
   <style type="text/css">
+    body {
+      font-family: sans-serif;
+      padding: 0;
+      margin: 0;
+    }
+
     #mainContainer {
       position: relative;
       width: 640px;
@@ -39,6 +45,11 @@
       cursor: pointer;
     }
 
+    #remainingTimeContainer {
+      padding: 12px 0;
+      font-size: 1.4em;
+    }
+
     button:focus { outline: 0; }
   </style>
 </head>
@@ -54,16 +65,23 @@
   </div>
   <button id="playButton" class="btn">Play</button>
   <button id="skipButton" class="btn">Skip</button>
+  <button id="fullscreenButton" class="btn">Fullscreen</button>
+  <div id="remainingTimeContainer">
+    Remaining: <span id="remainingTimeDisplay"></span>
+  </div>
   <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
   <script type="text/javascript">
-    var adsManager, adsLoader, adDisplayContainer, intervalTimer, playButton, skipButton, videoContent, adInit = false, adLoaded = false, adStarted = false;
+    var adsManager, adsLoader, adDisplayContainer, intervalTimer, playButton, skipButton, videoContent, remainingTimeContainer, remainingTimeDisplay, adInit = false, adLoaded = false, adStarted = false;
 
     function init() {
       videoContent = document.getElementById('contentElement');
       playButton = document.getElementById('playButton');
       skipButton = document.getElementById('skipButton');
+      remainingTimeContainer = document.getElementById('remainingTimeContainer');
+      remainingTimeDisplay = document.getElementById('remainingTimeDisplay');
       playButton.addEventListener('click', playAds);
       skipButton.addEventListener('click', skipAds);
+      fullscreenButton.addEventListener('click', fullscreenAds);
       setUpIMA();
     }
 
@@ -78,7 +96,7 @@
 
       // Request video ads.
       var adsRequest = new google.ima.AdsRequest();
-      adsRequest.adsResponse = '<?xml version="1.0" encoding="UTF-8"?> <VAST version="2.0"> <Ad id="601364"> <InLine> <AdSystem>Acudeo Compatible</AdSystem> <AdTitle>VAST 2.0 Instream Test 1</AdTitle> <Description>VAST 2.0 Instream Test 1</Description> <Creatives> <Creative AdID="601364"> <Linear> <Duration>00:00:30</Duration> <AdParameters> <![CDATA[ {"videoURL": "http://cdn.visiblemeasures.com/ad_assets/p/c5899/3/12-Enjoy Your Drink_KY Online.mp4", "clickThrough": "http://www.yahoo.com/"} ]]> </AdParameters> <MediaFiles> <MediaFile apiFramework="VPAID" width="640" height="360" type="application/javascript" delivery="progressive">http://localhost:8080/index.bundle.js</MediaFile> </MediaFiles> </Linear> </Creative> </Creatives> </InLine> </Ad> </VAST>';
+      adsRequest.adsResponse = '<?xml version="1.0" encoding="UTF-8"?> <VAST version="2.0"> <Ad id="601364"> <InLine> <AdSystem>Acudeo Compatible</AdSystem> <AdTitle>VAST 2.0 Instream Test 1</AdTitle> <Description>VAST 2.0 Instream Test 1</Description> <Creatives> <Creative AdID="601364"> <Linear> <Duration>00:00:30</Duration> <AdParameters> <![CDATA[ {"videoURL": "http://cdn.visiblemeasures.com/ad_assets/p/c5899/3/12-Enjoy Your Drink_KY Online.mp4", "clickThrough": "http://www.yahoo.com/"} ]]> </AdParameters> <MediaFiles> <MediaFile apiFramework="VPAID" width="640" height="360" type="application/javascript" delivery="progressive">http://localhost:8080/demo.bundle.js</MediaFile> </MediaFiles> </Linear> </Creative> </Creatives> </InLine> </Ad> </VAST>';
 
       adsRequest.linearAdSlotWidth = 640;
       adsRequest.linearAdSlotHeight = 400;
@@ -121,6 +139,19 @@
       }
     }
 
+    function fullscreenAds() {
+      var existingDimensions = contentElement.getBoundingClientRect();
+
+      adsManager.resize(window.innerWidth, window.innerHeight, google.ima.ViewMode.FULLSCREEN);
+
+      document.addEventListener('keydown', function escapeFullscreen(evt) {
+        if(evt.key == 'Escape' || evt.key == 'Esc' || evt.keyCode == 27) {
+          document.removeEventListener('keydown', escapeFullscreen);
+          adsManager.resize(existingDimensions.width, existingDimensions.height, google.ima.ViewMode.NORMAL);
+        }
+      });
+    }
+
     function onAdsManagerLoaded(adsManagerLoadedEvent) {
       // Get the ads manager.
       var adsRenderingSettings = new google.ima.AdsRenderingSettings();
@@ -138,6 +169,7 @@
       adsManager.addEventListener(google.ima.AdEvent.Type.CLICK, onAdEvent);
       adsManager.addEventListener(google.ima.AdEvent.Type.LOADED, onAdEvent);
       adsManager.addEventListener(google.ima.AdEvent.Type.STARTED, onAdEvent);
+      adsManager.addEventListener(google.ima.AdEvent.Type.SKIPPED, onAdEvent);
       adsManager.addEventListener(google.ima.AdEvent.Type.PROGRESS, onAdEvent);
       adsManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, onAdEvent);
       adsManager.addEventListener(google.ima.AdEvent.Type.MIDPOINT, onAdEvent);
@@ -157,19 +189,28 @@
             videoContent.play();
           }
           break;
+
         case google.ima.AdEvent.Type.STARTED:
           if (ad.isLinear()) {
             adStarted = true;
             intervalTimer = setInterval(
                 function() {
                   var remainingTime = adsManager.getRemainingTime();
+                  remainingTimeDisplay.innerHTML = remainingTime.toFixed(2);
                 },
                 300); // every 300ms
           }
           break;
+
+        case google.ima.AdEvent.Type.SKIPPED:
+          clearInterval(intervalTimer);
+          remainingTimeContainer.style.display = 'none';
+          break;
+
         case google.ima.AdEvent.Type.COMPLETE:
           if (ad.isLinear()) {
             clearInterval(intervalTimer);
+            remainingTimeContainer.style.display = 'none';
           }
           break;
       }

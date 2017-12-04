@@ -13,6 +13,10 @@ class VPAIDInterface {
 
     this.expanded = false;
     this.size = { width: 640, height: 360 };
+
+    if(params.window) {
+      window.getVPAIDAd = () => this;
+    }
   }
 
   initAd(width, height, viewMode, desiredBitrate, creativeData = {}, environmentVars = {}) {
@@ -28,8 +32,8 @@ class VPAIDInterface {
       // clickThrough: 'url of location to navigate to on click of slot element'
       const AdParameters = JSON.parse(creativeData.AdParameters);
 
-      this.ad = new this.AdCreativeType(environmentVars.videoSlot, AdParameters.videoURL);
-      this.overlays = new this.OverlayType(environmentVars.slot, AdParameters.clickThrough);
+      this.ad = new this.AdCreativeType(environmentVars.videoSlot, AdParameters, this);
+      this.overlays = new this.OverlayType(environmentVars.slot, AdParameters, this);
         
       this.ad
         .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_REMAINING_TIME_CHANGE), VPAIDEvents.AD_REMAINING_TIME_CHANGE)
@@ -116,6 +120,7 @@ class VPAIDInterface {
     this.size.width = width;
     this.size.height = height;
     this.viewMode = viewMode;
+    this.overlays.setSize(width, height);
     this.publish(VPAIDEvents.AD_SIZE_CHANGE);
     return this;
   }

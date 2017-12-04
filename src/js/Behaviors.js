@@ -2,11 +2,6 @@ import PubSub from 'PubSub';
 
 // Add pub sub behavior to subject class
 export const Observable = subject => class extends subject {
-  constructor(...args) {
-    super(...args);
-    this.pubsub = new PubSub();
-  }
-
   subscribe(fn, event, listenerScope) {
     this.pubsub = this.pubsub || new PubSub();
     this.pubsub.subscribe(event, fn.bind(listenerScope));
@@ -29,11 +24,6 @@ export const Observable = subject => class extends subject {
 
 // Add DOM event handlers with easy unregistration of all listeners 
 export const Listenable = subject => class extends subject {
-  constructor(...args) {
-    super(...args);
-    this.listeners = [];
-  }
-
   registerListener(el, eventName, fn, scope) {
     this.listeners = this.listeners || [];
     fn = fn.bind(scope);
