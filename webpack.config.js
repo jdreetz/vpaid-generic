@@ -15,7 +15,8 @@ module.exports = {
   },
   output: {
     path: paths.DIST,
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
+    libraryTarget: 'umd'
   },
   plugins: [ 
     new HTMLWebpackPlugin({ template: path.join(paths.SRC, 'IMA-VPAID-Host.html') }),

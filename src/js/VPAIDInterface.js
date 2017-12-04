@@ -2,6 +2,7 @@ import { Observable, Listenable } from './Behaviors';
 import * as VPAIDEvents from './VPAIDEvents';
 
 import SimpleControls from './SimpleControls';
+import JSONParser from './JSONParser';
 import VideoAd from './VideoAd';
 
 // Implements the required VPAID interface methods and properties as per the VPAID 2.0 specification 
@@ -10,12 +11,13 @@ class VPAIDInterface {
   constructor(params = {}) {
     this.AdCreativeType = params.creativeFormat || VideoAd;
     this.OverlayType = params.overlays || SimpleControls;
+    this.Parser = params.parser || JSONParser;
 
     this.expanded = false;
     this.size = { width: 640, height: 360 };
 
     if(params.window) {
-      window.getVPAIDAd = () => this;
+      params.window.getVPAIDAd = () => this;
     }
   }
 
@@ -27,26 +29,15 @@ class VPAIDInterface {
     this.environmentVars = { ...environmentVars };
 
     try {
-      // expected AdParameter format
-      // videoURL: 'url of the video to play'
-      // clickThrough: 'url of location to navigate to on click of slot element'
-      const AdParameters = JSON.parse(creativeData.AdParameters);
-
+      const AdParameters = this.Parser.parseAdParameters(creativeData.AdParameters);
       this.ad = new this.AdCreativeType(environmentVars.videoSlot, AdParameters, this);
       this.overlays = new this.OverlayType(environmentVars.slot, AdParameters, this);
         
-      this.ad
-        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_REMAINING_TIME_CHANGE), VPAIDEvents.AD_REMAINING_TIME_CHANGE)
-        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_VIDEO_FIRST_QUARTILE), VPAIDEvents.AD_VIDEO_FIRST_QUARTILE)
-        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_VIDEO_THIRD_QUARTILE), VPAIDEvents.AD_VIDEO_THIRD_QUARTILE)
-        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_DURATION_CHANGE), VPAIDEvents.AD_DURATION_CHANGE)
-        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_VIDEO_MIDPOINT), VPAIDEvents.AD_VIDEO_MIDPOINT)
-        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_VIDEO_COMPLETE), VPAIDEvents.AD_VIDEO_COMPLETE)
-        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_CLICK_THRU), VPAIDEvents.AD_CLICK_THRU)
-        .subscribe(this.onCreativeEvent.bind(this, VPAIDEvents.AD_STOPPED), VPAIDEvents.AD_STOPPED);
-
-      this.overlays
-        .subscribe(this.onOverlayEvent.bind(this, VPAIDEvents.AD_CLICK_THRU), VPAIDEvents.AD_CLICK_THRU);
+      // Allow Ad and Overlays to publish any of the available standard VPAID events
+      Object.values(VPAIDEvents).forEach( EVENT_NAME => {
+        this.ad.subscribe(this.onCreativeEvent.bind(this, EVENT_NAME), EVENT_NAME);
+        this.overlays.subscribe(this.onOverlayEvent.bind(this, EVENT_NAME), EVENT_NAME);
+      });
 
     } catch(e) {
       console.log(e);

@@ -96,7 +96,7 @@
 
       // Request video ads.
       var adsRequest = new google.ima.AdsRequest();
-      adsRequest.adsResponse = '<?xml version="1.0" encoding="UTF-8"?> <VAST version="2.0"> <Ad id="601364"> <InLine> <AdSystem>Acudeo Compatible</AdSystem> <AdTitle>VAST 2.0 Instream Test 1</AdTitle> <Description>VAST 2.0 Instream Test 1</Description> <Creatives> <Creative AdID="601364"> <Linear> <Duration>00:00:30</Duration> <AdParameters> <![CDATA[ {"videoURL": "http://cdn.visiblemeasures.com/ad_assets/p/c5899/3/12-Enjoy Your Drink_KY Online.mp4", "clickThrough": "http://www.yahoo.com/"} ]]> </AdParameters> <MediaFiles> <MediaFile apiFramework="VPAID" width="640" height="360" type="application/javascript" delivery="progressive">http://localhost:8080/demo.bundle.js</MediaFile> </MediaFiles> </Linear> </Creative> </Creatives> </InLine> </Ad> </VAST>';
+      adsRequest.adsResponse = '<?xml version="1.0" encoding="UTF-8"?> <VAST version="2.0"> <Ad id="601364"> <InLine> <AdSystem>Acudeo Compatible</AdSystem> <AdTitle>VAST 2.0 Instream Test 1</AdTitle> <Description>VAST 2.0 Instream Test 1</Description> <Creatives> <Creative AdID="601364"> <Linear> <Duration>00:00:30</Duration> <AdParameters> <![CDATA[ {"videoURL": "http://cdn.visiblemeasures.com/ad_assets/p/demo/ComputerFair1982.mp4", "clickThrough": "http://www.yahoo.com/"} ]]> </AdParameters> <MediaFiles> <MediaFile apiFramework="VPAID" width="640" height="360" type="application/javascript" delivery="progressive">http://localhost:8080/demo.bundle.js</MediaFile> </MediaFiles> </Linear> </Creative> </Creatives> </InLine> </Ad> </VAST>';
 
       adsRequest.linearAdSlotWidth = 640;
       adsRequest.linearAdSlotHeight = 400;
@@ -203,14 +203,12 @@
           break;
 
         case google.ima.AdEvent.Type.SKIPPED:
-          clearInterval(intervalTimer);
-          remainingTimeContainer.style.display = 'none';
+          onAdEnded();
           break;
 
         case google.ima.AdEvent.Type.COMPLETE:
           if (ad.isLinear()) {
-            clearInterval(intervalTimer);
-            remainingTimeContainer.style.display = 'none';
+            onAdEnded();
           }
           break;
       }
@@ -227,6 +225,11 @@
 
     function onContentResumeRequested() {
       videoContent.play();
+    }
+
+    function onAdEnded() {
+      clearInterval(intervalTimer);
+      remainingTimeContainer.style.display = 'none';
     }
 
     init();
