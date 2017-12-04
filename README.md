@@ -3,9 +3,9 @@
 A generic implementation of the [VPAID 2.0 spec](http://www.iab.net/media/file/VPAID_2.0_Final_04-10-2012.pdf) in ES6 Javascript. By default, it includes a HTML5 video player that handles playback of the specified creative, an overlay manager that handles click events, and an AdParameters parser that expects a JSON string. The video player, overlay handler, and parser can all be configured in the `VPAIDInterface` constructor. 
 
 ### Setup and building
-`npm install`
-Build: `npm run build`
-Dev: `npm run dev` hosts IMA-VPAID-Host.html at http://localhost:8080/
+* `npm install`
+* Build: `npm run build`
+* Dev: `npm run dev` hosts IMA-VPAID-Host.html at http://localhost:8080/
 
 ### Extension
 The library can be extended or overriden in several ways. `VPAIDInterface` is the main entry point to the library. It implements the required VPAID interface methods and exposes the `getVPAIDAd` method on the supplied `window` object. The constructor looks for an object with the following configuration options:
