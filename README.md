@@ -20,4 +20,44 @@ By default, all `VPAIDEvents` will be published from the `creativeFormat` and `o
 If the configuration options don't provide enough flexability, subclassing `VPAIDInterface` and overriding the required methods is recommended.  
 
 ### Usage
+
+```javascript
+// Bare minimum usage
+const instance = new VPAIDInterface();
+window.getVPAIDAd = () => instance;
+// this represents the Javascript supplied in the MediaFile URL in the VAST tag
+// <MediaFile apiFramework="VPAID" width="640" height="360" type="application/javascript" delivery="progressive">http://localhost:8080/demo.bundle.js</MediaFile>
+```
+
+```javascript
+// Advanced usage
+
+// Custom video class that inherits from VideoAd
+const CustomVideoAd = class extends VideoAd {
+  constructor(..args) {
+      super(...args);
+        
+        this.videoEl.autoplay = false;
+        this.videoEl.controls = true;
+    }
+};
+
+
+// Custom controls class that inherits from SimpleControls
+const CustomControls = class extends SimpleControls {
+  generateControls() {
+      const aButton = document.createElement('button');
+        aButton.innerHTML = 'Foobar';
+        aButton.addEventListener('click', evt => console.log('I was clicked'));
+        return aButton;
+    }
+}
+
+const instance = new VPAIDInterface({
+  creativeFormat: CustomVideoAd,
+    overlays: CustomControls,
+    window
+});
+```
+
 See `IMA-VPAID-Host.html` for an example of interacting with the VPAID interface from [Google's IMA VPAID host](https://developers.google.com/interactive-media-ads/docs/sdks/html5/). The demo page provides a string for VAST tag that loads `demo.bundle.js` which is the bundled version of `demo.js`. `demo.js` creates an instance of VPAIDInterface and supplies just the `window` object that `getVPAIDAd` will be attached to. All other options use the defaults (`VideoAd`, `SimpleControls`, 
