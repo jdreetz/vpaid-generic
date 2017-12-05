@@ -21,21 +21,22 @@ test('Responds to VPAID method calls correctly', assert => {
 
   assert.ok(parseFloat(instance.handshakeVersion()) >= 2.0, 'Version 2.0 or higher');
 
-  const loaded = new Promise( (res, rej) => instance.subscribe(res, VPAIDEvents.AD_LOADED) );
-  const started = new Promise( (res, rej) => instance.subscribe(res, VPAIDEvents.AD_STARTED));
+  const loaded = new Promise( (res, rej) => instance.subscribe( () => { instance.startAd(); res(new Date().getTime()); }, VPAIDEvents.AD_LOADED) );
+  const started = new Promise( (res, rej) => instance.subscribe( () => res(new Date().getTime()), VPAIDEvents.AD_STARTED));
+  const impression = new Promise( (res, rej) => instance.subscribe( , VPAIDEvents.AD_IMPRESSION);
 
   instance
-    .initAd(640, 360, 'normal', -1, {}, {})
-    .startAd();
+    .initAd(640, 360, 'normal', -1, {}, {});
 
-  Promise.all([loaded, started]).then( () => {
+  Promise.all([loaded, started]).then( ([loadTime, startTime]) => {
     assert.ok('AdLoaded called after initAd');
     assert.ok('AdStarted called after startAd');
+    assert.ok(loadTime < startTime, 'AdStarted published after AdLoaded');
     assert.end();
   });
 });
 
-test('Tests VPAIDInterface non-spec functionality', assert => {
+test('getVPAIDAd is attached to supplied window param', assert => {
   const win = {}, instance = new VPAIDInterface({ window: win });
 
   assert.equal(win.getVPAIDAd(), instance, 'the VPAIDInterface instance should be exposed on the window provided');
