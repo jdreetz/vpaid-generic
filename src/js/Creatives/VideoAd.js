@@ -1,8 +1,11 @@
-import { Observable, Listenable } from './Behaviors';
-import * as VPAIDEvents from './VPAIDEvents';
+import { Observable, Listenable } from '../Helpers/Behaviors';
+import * as VPAIDEvents from '../Enum/VPAIDEvents';
+import BaseCreative from './BaseCreative';
 
-class VideoAd {
+class VideoAd extends BaseCreative {
   constructor(videoEl, { videoURL }, parentInterface) {
+    super();
+
     if(videoEl && videoURL) {
       this.videoEl = videoEl;
       this.videoURL = videoURL;
@@ -64,11 +67,6 @@ class VideoAd {
 
       this.publish(VPAIDEvents.AD_REMAINING_TIME_CHANGE);
     }
-  }
-
-  onClickThrough() {
-    window.open(this.clickThrough, '_blank');
-    this.publish(VPAIDEvents.AD_CLICK_THRU);
   }
 
   destory() {

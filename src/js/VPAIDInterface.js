@@ -1,19 +1,21 @@
-import { Observable, Listenable } from './Behaviors';
-import * as VPAIDEvents from './VPAIDEvents';
+import { Observable, Listenable } from './Helpers/Behaviors';
+import { ValidCreative, ValidOverlay, ValidParser } from './Helpers/Validation';
+import * as VPAIDEvents from './Enum/VPAIDEvents';
 
-import SimpleControls from './SimpleControls';
-import JSONParser from './JSONParser';
-import VideoAd from './VideoAd';
+import SimpleControls from './Overlays/SimpleControls';
+import JSONParser from './Parsers/JSONParser';
+import VideoAd from './Creatives/VideoAd';
 
 // Implements the required VPAID interface methods and properties as per the VPAID 2.0 specification 
 // http://www.iab.net/media/file/VPAID_2.0_Final_04-10-2012.pdf
 class VPAIDInterface {
   constructor(params = {}) {
-    this.AdCreativeType = params.creativeFormat || VideoAd;
-    this.OverlayType = params.overlays || SimpleControls;
-    this.Parser = params.parser || JSONParser;
+    this.AdCreativeType = ValidCreative(params.creativeFormat) ? params.creativeFormat : VideoAd;
+    this.OverlayType = ValidOverlay(params.overlays) ? params.overlays : SimpleControls;
+    this.Parser = ValidParser(params.parser) ? params.parser : JSONParser;
 
     this.expanded = false;
+    this.skippable = false;
     this.size = { width: 640, height: 360 };
 
     if(params.window) {
@@ -29,22 +31,35 @@ class VPAIDInterface {
     this.environmentVars = { ...environmentVars };
 
     try {
-      const AdParameters = this.Parser.parseAdParameters(creativeData.AdParameters);
-      this.ad = new this.AdCreativeType(environmentVars.videoSlot, AdParameters, this);
-      this.overlays = new this.OverlayType(environmentVars.slot, AdParameters, this);
-        
-      // Allow Ad and Overlays to publish any of the available standard VPAID events
-      Object.values(VPAIDEvents).forEach( EVENT_NAME => {
-        this.ad.subscribe(this.onCreativeEvent.bind(this, EVENT_NAME), EVENT_NAME);
-        this.overlays.subscribe(this.onOverlayEvent.bind(this, EVENT_NAME), EVENT_NAME);
-      });
-
+      // parseAdParameters could be async, so we pass it through Promise.all to handle sync and async cases
+      Promise
+        .all([this.Parser.parseAdParameters(creativeData.AdParameters)])
+        .then(this.onAdParametersParsed.bind(this), this.onAdParseFail.bind(this));
     } catch(e) {
-      console.log(e);
-    } 
+      this.onAdParseFail(e);
+    }
+    
+    return this;
+  }
+
+  onAdParseFail(e) {
+    console.log(e);
+    this.destroy();
+    this.publish(VPAIDEvents.AD_ERROR, `Error parsing AdParameters - ${e.toString()}`);
+    this.publish(VPAIDEvents.AD_STOPPED);
+  }
+
+  onAdParametersParsed([AdParameters]) {
+    this.ad = new this.AdCreativeType(this.environmentVars.videoSlot, AdParameters, this);
+    this.overlays = new this.OverlayType(this.environmentVars.slot, AdParameters, this);
+      
+    // Allow Ad and Overlays to publish any of the available standard VPAID events
+    Object.values(VPAIDEvents).forEach( EVENT_NAME => {
+      this.ad.subscribe(this.onCreativeEvent.bind(this, EVENT_NAME), EVENT_NAME);
+      this.overlays.subscribe(this.onOverlayEvent.bind(this, EVENT_NAME), EVENT_NAME);
+    });
 
     this.publish(VPAIDEvents.AD_LOADED);
-    return this;
   }
 
   onCreativeEvent(name) {
@@ -56,6 +71,7 @@ class VPAIDInterface {
   }
 
   startAd() {
+    this.skippable = true;
     this.publish(VPAIDEvents.AD_IMPRESSION);
     this.publish(VPAIDEvents.AD_STARTED);
     this.publish(VPAIDEvents.AD_VIDEO_START);
@@ -111,7 +127,11 @@ class VPAIDInterface {
     this.size.width = width;
     this.size.height = height;
     this.viewMode = viewMode;
-    this.overlays.setSize(width, height);
+
+    if(this.overlays) {
+      this.overlays.setSize(width, height);
+    }
+
     this.publish(VPAIDEvents.AD_SIZE_CHANGE);
     return this;
   }
@@ -133,7 +153,7 @@ class VPAIDInterface {
   }
 
   getAdSkippableState() {
-    return true;
+    return this.skippable;
   }
 
   getAdVolume() {
@@ -163,6 +183,16 @@ class VPAIDInterface {
   setAdVolume(vol) {
     if(this.ad) {
       this.ad.volume = vol;
+    }
+  }
+
+  destroy() {
+    if(this.ad && typeof this.ad.destroy == 'function') {
+      this.ad.destroy();
+    }
+
+    if(this.overlays && typeof this.overlays.destroy === 'function') {
+      this.overlays.destroy();
     }
   }
 }
