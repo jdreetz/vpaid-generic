@@ -342,11 +342,6 @@ var BaseParser = function () {
     value: function parseAdParameters() {
       return {};
     }
-  }, {
-    key: "asynchronous",
-    get: function get() {
-      return false;
-    }
   }]);
 
   return BaseParser;
@@ -706,7 +701,7 @@ var VPAIDInterface = function () {
       this.environmentVars = _extends({}, environmentVars);
 
       try {
-        // parseAdParameters could be asynchornous, so we pass it through Promise.all to handle sync and async cases
+        // parseAdParameters could be async, so we pass it through Promise.all to handle sync and async cases
         Promise.all([this.Parser.parseAdParameters(creativeData.AdParameters)]).then(this.onAdParametersParsed.bind(this), this.onAdParseFail.bind(this));
       } catch (e) {
         this.onAdParseFail(e);

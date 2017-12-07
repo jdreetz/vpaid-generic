@@ -33,22 +33,22 @@ window.getVPAIDAd = () => instance;
 // Custom video class that inherits from VideoAd
 const CustomVideoAd = class extends VideoAd {
   constructor(..args) {
-      super(...args);
-        
-      this.videoEl.autoplay = false;
-      this.videoEl.controls = true;
-    }
+    super(...args);
+      
+    this.videoEl.autoplay = false;
+    this.videoEl.controls = true;
+  }
 };
 
 
 // Custom controls class that inherits from SimpleControls
 const CustomControls = class extends SimpleControls {
   generateControls() {
-      const aButton = document.createElement('button');
-      aButton.innerHTML = 'Foobar';
-      aButton.addEventListener('click', evt => console.log('I was clicked'));
-      return aButton;
-    }
+    const aButton = document.createElement('button');
+    aButton.innerHTML = 'Foobar';
+    aButton.addEventListener('click', evt => console.log('I was clicked'));
+    return aButton;
+  }
 }
 
 const instance = new VPAIDInterface({
@@ -58,4 +58,11 @@ const instance = new VPAIDInterface({
 });
 ```
 
-See `IMA-VPAID-Host.html` for an example of interacting with the VPAID interface from [Google's IMA VPAID host](https://developers.google.com/interactive-media-ads/docs/sdks/html5/). The demo page provides a string for VAST tag that loads `demo.bundle.js` which is the bundled version of `demo.js`. `demo.js` creates an instance of VPAIDInterface and supplies just the `window` object that `getVPAIDAd` will be attached to. All other options use the defaults (`VideoAd`, `SimpleControls`, `JSONParser`];
+See `IMA-VPAID-Host.html` for an example of interacting with the VPAID interface from [Google's IMA VPAID host](https://developers.google.com/interactive-media-ads/docs/sdks/html5/). The demo page provides a string for VAST tag that loads `demo.bundle.js` which is the bundled version of `demo.js`. `demo.js` creates an instance of VPAIDInterface and supplies just the `window` object that `getVPAIDAd` will be attached to. All other options use the defaults (`VideoAd`, `SimpleControls`, `JSONParser`);
+
+### Testing
+```
+npm test
+```
+
+Tests currently use [Tape](https://github.com/substack/tape)
