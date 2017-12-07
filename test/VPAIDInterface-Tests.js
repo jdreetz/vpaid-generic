@@ -1,8 +1,14 @@
 import is from 'is';
 import test from 'tape';
-import { Observable } from '../src/js/Behaviors.js';
-import * as VPAIDEvents from '../src/js/VPAIDEvents.js';
+import { Observable } from '../src/js/Helpers/Behaviors.js';
+import * as VPAIDEvents from '../src/js/Enum/VPAIDEvents.js';
 import VPAIDInterface from '../src/js/VPAIDInterface.js';
+import BaseCreative from '../src/js/Creatives/BaseCreative';
+import VideoAd from '../src/js/Creatives/VideoAd';
+import BaseOverlay from '../src/js/Overlays/BaseOverlay';
+import SimpleControls from '../src/js/Overlays/SimpleControls';
+import BaseParser from '../src/js/Parsers/BaseParser';
+import JSONParser from '../src/js/Parsers/JSONParser';
 
 
 test('Has required VPAID spec. methods and properties', assert => {
@@ -16,24 +22,178 @@ test('Has required VPAID spec. methods and properties', assert => {
   assert.end();
 });
 
-test('Responds to VPAID method calls correctly', assert => {
-  const instance = new VPAIDInterface(getEmptyConfig());
+test('initAd and startAd methods publish appropriate events in correct order', assert => {
+  const instance = new VPAIDInterface(getEmptyConfig()); 
+  let ct = 0;
 
-  assert.ok(parseFloat(instance.handshakeVersion()) >= 2.0, 'Version 2.0 or higher');
+  const loaded      = new Promise( (res, rej) => instance.subscribe( () => { instance.startAd(); res(ct++); }, VPAIDEvents.AD_LOADED) );
+  const started     = new Promise( (res, rej) => instance.subscribe( () => res(ct++), VPAIDEvents.AD_STARTED));
+  const impression  = new Promise( (res, rej) => instance.subscribe( () => res(ct++), VPAIDEvents.AD_IMPRESSION));
+  const video_start = new Promise( (res, rej) => instance.subscribe( () => res(ct++), VPAIDEvents.AD_VIDEO_START));
+  const skip_state  = new Promise( (res, rej) => instance.subscribe( () => res(ct++), VPAIDEvents.AD_SKIPPABLE_STATE_CHANGE));
 
-  const loaded = new Promise( (res, rej) => instance.subscribe( () => { instance.startAd(); res(new Date().getTime()); }, VPAIDEvents.AD_LOADED) );
-  const started = new Promise( (res, rej) => instance.subscribe( () => res(new Date().getTime()), VPAIDEvents.AD_STARTED));
-  const impression = new Promise( (res, rej) => instance.subscribe( , VPAIDEvents.AD_IMPRESSION);
 
-  instance
-    .initAd(640, 360, 'normal', -1, {}, {});
+  assert.equal(instance.initAd(640, 360, 'normal', -1, {}, {}), instance, 'Should return instance of VPAIDInterface');
 
-  Promise.all([loaded, started]).then( ([loadTime, startTime]) => {
+  Promise.all([loaded, impression, started, video_start, skip_state]).then( ([loadTime, impressionTime, startTime, videoStartTime, skipTime]) => {
     assert.ok('AdLoaded called after initAd');
-    assert.ok('AdStarted called after startAd');
-    assert.ok(loadTime < startTime, 'AdStarted published after AdLoaded');
+    assert.ok(loadTime < impressionTime, 'AdImpression published after AdLoaded');
+    assert.ok(impressionTime < startTime, 'AdStarted published after AdImpression'); 
+    assert.ok(startTime < videoStartTime, 'AdVideoStart published after AdStarted');
+    assert.ok(videoStartTime < skipTime, 'AdSkippableStateChange published after AdVideoStart');
     assert.end();
   });
+});
+
+test('can skip ad', assert => {
+  const instance = new VPAIDInterface();
+
+  instance.subscribe( () => {
+    assert.ok('Should publish AdSkipped when skipAd is called');
+    assert.end();
+  }, VPAIDEvents.AD_SKIPPED);
+  
+  assert.equal(instance.skipAd(), instance, 'Should return instance of VPAIDInterface');
+});
+
+test('can stop ad', assert => {
+  const instance = new VPAIDInterface();
+
+  instance.subscribe( () => {
+    assert.ok('Should publish AdStopped when stopAd is called');
+    assert.end();
+  }, VPAIDEvents.AD_STOPPED);
+  
+  instance.stopAd();
+});
+
+test('can pause ad', assert => {
+  const instance = new VPAIDInterface();
+  let adPaused = false;
+
+  instance.ad = { 
+    videoEl: { 
+      pause() { 
+        adPaused = true 
+      }
+    }
+  };
+
+  instance.subscribe( () => {
+    assert.equal(adPaused, true, 'Should call pause on the video element');
+    assert.ok('Should publish AdPaused when pauseAd is called');
+    assert.end();
+  }, VPAIDEvents.AD_PAUSED);
+  
+  assert.equal(instance.pauseAd(), instance, 'Should return instance of VPAIDInterface');
+});
+
+test('can resume ad', assert => {
+  const instance = new VPAIDInterface();
+  let adResumed = false;
+
+  instance.ad = { 
+    videoEl: { 
+      play() { 
+        adResumed = true 
+      }
+    }
+  };
+
+  instance.subscribe( () => {
+    assert.equal(adResumed, true, 'Should call play on the video element');
+    assert.ok('Should publish AdResumed when resumeAd is called');
+    assert.end();
+  }, VPAIDEvents.AD_PLAYING);
+  
+  assert.equal(instance.resumeAd(), instance, 'Should return instance of VPAIDInterface');
+});
+
+test('can collapseAd', assert => {
+  const instance = new VPAIDInterface();
+
+  instance.subscribe( () => {
+    assert.equal(instance.expanded, false, 'Should set expanded as false when collapseAd called');
+    assert.ok('Should publish AdExpandedChanged when collapseAd is called');
+    assert.end();
+  }, VPAIDEvents.AD_EXPANDED_CHANGE);
+  
+  assert.equal(instance.collapseAd(), instance, 'Should return instance of VPAIDInterface');
+});
+
+test('can expandAd', assert => {
+  const instance = new VPAIDInterface();
+
+  instance.subscribe( () => {
+    assert.equal(instance.expanded, true, 'Should set expanded as true when expandAd called');
+    assert.ok('Should publish AdExpandedChanged when expandAd is called');
+    assert.end();
+  }, VPAIDEvents.AD_EXPANDED_CHANGE);
+  
+  assert.equal(instance.expandAd(), instance, 'Should return instance of VPAIDInterface');
+});
+
+test('can resizeAd', assert => {
+  const instance = new VPAIDInterface();
+  instance.overlays = {
+    setSize(w, h) {
+      this.width = w;
+      this.height = h;
+    }
+  };
+
+  instance.subscribe( () => {
+    assert.equal(instance.size.width, 300, 'Should set width of VPAIDInterface');
+    assert.equal(instance.size.height, 250, 'Should set height of VPAIDInterface');
+    assert.equal(instance.viewMode, 'foo', 'Should set viewmode');
+    assert.ok(instance.overlays.width === 300 && instance.overlays.height === 250, 'Should call setSize on the overlays');
+    assert.ok('Should publish AdSizeChange when resizeAd is called');
+    assert.end();
+  }, VPAIDEvents.AD_SIZE_CHANGE);
+  
+  assert.equal(instance.resizeAd(300, 250, 'foo'), instance, 'Should return instance of VPAIDInterface');
+});
+
+test('can access VPAIDInterface properties via getters', assert => {
+  const instance = new VPAIDInterface();
+
+  assert.ok(parseFloat(instance.handshakeVersion()) >= 2.0, 'VPAID version should be 2.0 or higher');
+
+  assert.equal(instance.getAdExpanded(), false, 'Should expose expanded state');
+  instance.expanded = true;
+  assert.equal(instance.getAdExpanded(), true, 'Should expose expanded state');
+  
+  assert.equal(instance.getAdLinear(), true, 'Should always return true for AdLinear state');
+  
+  assert.equal(instance.getAdDuration(), -2, 'Should return -2 if duration not set');
+  instance.ad = { duration: 1000 };
+  assert.equal(instance.getAdDuration(), 1000, 'Should return duration if ad available');
+
+  delete instance.ad;
+  assert.equal(instance.getAdRemainingTime(), -2, 'Should return -2 if ad not avialable');
+  instance.ad = { remaining: 1000 };
+  assert.equal(instance.getAdRemainingTime(), 1000, 'Should return remaining if ad available');
+
+  assert.equal(instance.getAdSkippableState(), false, 'Should not be skippable initially');
+  instance.skippable = true;
+  assert.equal(instance.getAdSkippableState(), true, 'Should return the current skippable state');
+
+  delete instance.ad;
+  assert.equal(instance.getAdVolume(), 0, 'Should return zero if ad not available');
+  instance.ad = { volume: 1 };
+  assert.equal(instance.getAdVolume(), 1, 'Should return ad volume if ad available');
+
+  assert.equal(instance.getAdCompanions(), '', 'Should return nothing for AdCompanions');
+  assert.equal(instance.getAdIcons(), false, 'Should return false for AdiIcons');
+
+  instance.size = { width: 1000, height: 2000 };
+  assert.equal(instance.getAdHeight(), 2000, 'Should return current height');
+  assert.equal(instance.getAdWidth(), 1000, 'Should return current width');
+
+  instance.setAdVolume(100);
+  assert.equal(instance.getAdVolume(), 100, 'Should set ad volume');
+
+  assert.end();
 });
 
 test('getVPAIDAd is attached to supplied window param', assert => {
@@ -43,12 +203,53 @@ test('getVPAIDAd is attached to supplied window param', assert => {
   assert.end();
 });
 
+test('Should allow custom Ad, overlays, and parser', assert => {
+  // ToDo fix tests. Class validation not working in tape, but works in browser
+  const creativeFormat = VideoAd, overlays = SimpleControls, parser = JSONParser;
+  const instance = new VPAIDInterface({ creativeFormat, overlays, parser });
+
+  assert.equal(instance.AdCreativeType, creativeFormat, 'Should use creativeFormat passed in');
+  assert.equal(instance.OverlayType, overlays, 'Should use overlay class passed in');
+  assert.equal(instance.Parser, parser, 'Should use parser class passed in');
+
+  assert.end();
+});
+
+test('Should support async parsers', assert => {
+  const parser = getAsyncParser(), creativeFormat = getAsyncCreative(), overlays = class extends BaseOverlay {};
+  const instance = new VPAIDInterface({ creativeFormat, parser, overlays });
+
+  instance.subscribe(() => {
+    assert.equal(instance.ad.params, 'Foobar', 'Async parser should provide AdParameters to creativeFormat');
+    assert.end();
+  }, VPAIDEvents.AD_LOADED);
+
+  instance.initAd(640, 360, 'normal', -1, { AdParameters: 'Foobar' }, {});
+});
+
+function getAsyncParser() {
+  return class extends BaseParser {
+    static parseAdParameters(paramsString) {
+      return new Promise((res, rej) => {
+        res(paramsString);
+      });
+    }
+  }
+}
+
+function getAsyncCreative() {
+  return class extends BaseCreative {
+    constructor(el, params, instance) {
+      super();
+      this.params = params;
+    }
+  }
+}
+
 function getEmptyConfig() {
   return { 
-    creativeFormat: Observable(class {}), 
-    overlays: Observable(class {}), 
-    parser: { 
-      parseAdParameters: () => {} 
-    }
+    creativeFormat: class extends BaseCreative {}, 
+    overlays: class extends BaseOverlay {}, 
+    parser: class extends BaseParser {}
   };
 }

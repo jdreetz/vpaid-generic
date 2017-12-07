@@ -1,10 +1,13 @@
-import { Observable, Listenable } from './Behaviors';
-import * as VPAIDEvents from './VPAIDEvents';
+import { Observable, Listenable } from '../Helpers/Behaviors';
+import * as VPAIDEvents from '../Enum/VPAIDEvents';
+import BaseOverlay from './BaseOverlay';
 
 
 // Simple overlay class. Handles clicks. Can be overriden to provide more complicated user interface
-class SimpleControls {
+class SimpleControls extends BaseOverlay {
   constructor(slotEl, { clickThrough }, { size }) {
+    super();
+
     if(typeof slotEl != 'undefined') {
       this.slotEl = slotEl;
 

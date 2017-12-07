@@ -34,11 +34,13 @@ export const Listenable = subject => class extends subject {
   unregisterListener(el, name) {
     this.listeners = this.listeners || [];
     this.listeners.filter( l => l.eventName === name).forEach( l => el.removeEventListener(l.eventName, l.fn) );
+    this.listeners = this.listeners.filter( l => l.eventName !== name );
   }
 
   unregisterAll() {
     this.listeners = this.listeners || [];
     this.listeners.forEach( l => l.el.removeEventListener(l.eventName, l.fn) );
+    this.listeners = [];
   }
 
 }
