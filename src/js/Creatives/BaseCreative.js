@@ -1,3 +1,6 @@
+import { Observable } from '../Helpers/Behaviors';
+
+@Observable
 export default class BaseCreative {
   constructor(){}
   get duration() { return -2 }

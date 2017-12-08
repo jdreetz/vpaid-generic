@@ -2,7 +2,6 @@ import { Observable, Listenable } from '../Helpers/Behaviors';
 import * as VPAIDEvents from '../Enum/VPAIDEvents';
 import BaseCreative from './BaseCreative';
 
-@Observable
 @Listenable
 export default class VideoAd extends BaseCreative {
   constructor(videoEl, { videoURL }, parentInterface) {
