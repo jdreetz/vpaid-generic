@@ -1,4 +1,4 @@
 {
   "presets": ["env", "stage-2"],
-  "plugins": ["transform-export-extensions"]
+  "plugins": ["transform-export-extensions", "transform-decorators-legacy"]
 }

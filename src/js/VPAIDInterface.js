@@ -8,7 +8,8 @@ import VideoAd from './Creatives/VideoAd';
 
 // Implements the required VPAID interface methods and properties as per the VPAID 2.0 specification 
 // http://www.iab.net/media/file/VPAID_2.0_Final_04-10-2012.pdf
-class VPAIDInterface {
+@Observable
+export default class VPAIDInterface {
   constructor(params = {}) {
     this.AdCreativeType = ValidCreative(params.creativeFormat) ? params.creativeFormat : VideoAd;
     this.OverlayType = ValidOverlay(params.overlays) ? params.overlays : SimpleControls;
@@ -196,8 +197,3 @@ class VPAIDInterface {
     }
   }
 }
-
-VPAIDInterface = Observable(VPAIDInterface);
-VPAIDInterface = Listenable(VPAIDInterface);
-
-export default VPAIDInterface;
