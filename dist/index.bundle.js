@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -87,7 +87,7 @@ exports.Listenable = exports.Observable = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _PubSub = __webpack_require__(9);
+var _PubSub = __webpack_require__(10);
 
 var _PubSub2 = _interopRequireDefault(_PubSub);
 
@@ -638,6 +638,60 @@ exports.default = VideoAd;
 "use strict";
 
 
+var _module$exports;
+
+var _VPAIDInterface = __webpack_require__(9);
+
+var _VPAIDInterface2 = _interopRequireDefault(_VPAIDInterface);
+
+var _VPAIDEvents = __webpack_require__(1);
+
+var _VPAIDEvents2 = _interopRequireDefault(_VPAIDEvents);
+
+var _BaseCreative = __webpack_require__(2);
+
+var _BaseCreative2 = _interopRequireDefault(_BaseCreative);
+
+var _VideoAd = __webpack_require__(7);
+
+var _VideoAd2 = _interopRequireDefault(_VideoAd);
+
+var _BaseOverlay = __webpack_require__(3);
+
+var _BaseOverlay2 = _interopRequireDefault(_BaseOverlay);
+
+var _SimpleControls = __webpack_require__(5);
+
+var _SimpleControls2 = _interopRequireDefault(_SimpleControls);
+
+var _BaseParser = __webpack_require__(4);
+
+var _BaseParser2 = _interopRequireDefault(_BaseParser);
+
+var _JSONParser = __webpack_require__(6);
+
+var _JSONParser2 = _interopRequireDefault(_JSONParser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+module.exports = (_module$exports = {
+  SimpleControls: _SimpleControls2.default,
+  VPAIDInterface: _VPAIDInterface2.default,
+  VPAIDEvents: _VPAIDEvents2.default,
+  BaseCreative: _BaseCreative2.default,
+  VideoAd: _VideoAd2.default,
+  BaseOverlay: _BaseOverlay2.default
+}, _defineProperty(_module$exports, 'SimpleControls', _SimpleControls2.default), _defineProperty(_module$exports, 'BaseParser', _BaseParser2.default), _defineProperty(_module$exports, 'JSONParser', _JSONParser2.default), _module$exports);
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -651,13 +705,13 @@ var _class;
 
 var _Behaviors = __webpack_require__(0);
 
-var _Validation = __webpack_require__(10);
+var _Validation = __webpack_require__(11);
 
 var _VPAIDEvents = __webpack_require__(1);
 
 var VPAIDEvents = _interopRequireWildcard(_VPAIDEvents);
 
-var _VPAIDDecorators = __webpack_require__(11);
+var _VPAIDDecorators = __webpack_require__(12);
 
 var _SimpleControls = __webpack_require__(5);
 
@@ -758,7 +812,7 @@ var VPAIDInterface = (0, _Behaviors.Observable)(_class = (0, _VPAIDDecorators.VP
 exports.default = VPAIDInterface;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -1211,7 +1265,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1277,7 +1331,7 @@ var ValidParser = exports.ValidParser = function ValidParser(subject) {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1288,11 +1342,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.VPAIDProperties = exports.VPAIDMethods = undefined;
 
-var _VPAIDMethods = __webpack_require__(12);
+var _VPAIDMethods = __webpack_require__(13);
 
 var _VPAIDMethods2 = _interopRequireDefault(_VPAIDMethods);
 
-var _VPAIDProperties = __webpack_require__(13);
+var _VPAIDProperties = __webpack_require__(14);
 
 var _VPAIDProperties2 = _interopRequireDefault(_VPAIDProperties);
 
@@ -1302,7 +1356,7 @@ exports.VPAIDMethods = _VPAIDMethods2.default;
 exports.VPAIDProperties = _VPAIDProperties2.default;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1446,7 +1500,7 @@ exports.default = function (subject) {
 };
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1541,60 +1595,6 @@ exports.default = function (subject) {
     return _class;
   }(subject);
 };
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _module$exports;
-
-var _VPAIDInterface = __webpack_require__(8);
-
-var _VPAIDInterface2 = _interopRequireDefault(_VPAIDInterface);
-
-var _VPAIDEvents = __webpack_require__(1);
-
-var _VPAIDEvents2 = _interopRequireDefault(_VPAIDEvents);
-
-var _BaseCreative = __webpack_require__(2);
-
-var _BaseCreative2 = _interopRequireDefault(_BaseCreative);
-
-var _VideoAd = __webpack_require__(7);
-
-var _VideoAd2 = _interopRequireDefault(_VideoAd);
-
-var _BaseOverlay = __webpack_require__(3);
-
-var _BaseOverlay2 = _interopRequireDefault(_BaseOverlay);
-
-var _SimpleControls = __webpack_require__(5);
-
-var _SimpleControls2 = _interopRequireDefault(_SimpleControls);
-
-var _BaseParser = __webpack_require__(4);
-
-var _BaseParser2 = _interopRequireDefault(_BaseParser);
-
-var _JSONParser = __webpack_require__(6);
-
-var _JSONParser2 = _interopRequireDefault(_JSONParser);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-module.exports = (_module$exports = {
-  SimpleControls: _SimpleControls2.default,
-  VPAIDInterface: _VPAIDInterface2.default,
-  VPAIDEvents: _VPAIDEvents2.default,
-  BaseCreative: _BaseCreative2.default,
-  VideoAd: _VideoAd2.default,
-  BaseOverlay: _BaseOverlay2.default
-}, _defineProperty(_module$exports, 'SimpleControls', _SimpleControls2.default), _defineProperty(_module$exports, 'BaseParser', _BaseParser2.default), _defineProperty(_module$exports, 'JSONParser', _JSONParser2.default), _module$exports);
 
 /***/ })
 /******/ ]);
