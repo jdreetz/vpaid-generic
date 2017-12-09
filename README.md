@@ -1,4 +1,5 @@
 ![Travis Status](https://travis-ci.org/jdreetz/vpaid-generic.svg?branch=master)
+[![codecov](https://codecov.io/gh/jdreetz/vpaid-generic/branch/master/graph/badge.svg)](https://codecov.io/gh/jdreetz/vpaid-generic)
 
 # VPAID Generic
 
