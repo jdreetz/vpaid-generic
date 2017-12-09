@@ -1,2 +1,2 @@
-import VPAIDInterface from '../src/js/VPAIDInterface';
+import VPAIDInterface from '../src/js/index';
 new VPAIDInterface({ window: window });
