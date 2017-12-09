@@ -1,4 +1,9 @@
 {
   "presets": ["env", "stage-2"],
-  "plugins": ["transform-export-extensions", "transform-decorators-legacy"]
+  "plugins": ["transform-export-extensions", "transform-decorators-legacy"],
+  "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    }
+  }
 }

@@ -4,19 +4,18 @@ const path = require('path'),
       HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 
 const paths = {
+  TEST: path.resolve(__dirname, 'test'),
   DEMO: path.resolve(__dirname, 'demo'),
-  DIST: path.resolve(__dirname, 'dist'),
-  SRC: path.resolve(__dirname, 'src'),
   JS: path.resolve(__dirname, 'src/js')
 };
 
 module.exports = {
   entry: { 
-    index: path.join(paths.JS, 'index.js'),
-    demo: path.join(paths.DEMO, 'demo.js')
+    demo: path.join(paths.DEMO, 'demo.js'),
+    test: path.join(paths.TEST, 'index.js')
   },
   output: {
-    path: paths.DIST,
+    path: paths.DEMO,
     filename: '[name].bundle.js',
     libraryTarget: 'umd'
   },
@@ -24,18 +23,26 @@ module.exports = {
     new HTMLWebpackPlugin({ 
       filename: 'IMA-VPAID-Host.html',
       template: path.join(paths.DEMO, 'IMA-VPAID-Host.html'),
-      excludeAssets: [/index\.bundle\.js/]
+      excludeAssets: [/test\.bundle\.js/]
+    }),
+    new HTMLWebpackPlugin({
+      filename: 'test.html',
+      excludeAssets: [/demo\.bundle\.js/]
     }),
     new HTMLWebpackIncludeAssetsPlugin({ 
+      files: ['IMA-VPAID-Host.html'],
       assets: [
-        'demo/ad-tag.js', 
-        'demo/IMA-VPAID-Host.css', 
-        'demo/IMA-VPAID-Host.js'
+        'ad-tag.js', 
+        'IMA-VPAID-Host.css', 
+        'IMA-VPAID-Host.js'
       ], 
       append: true
     }),
     new HtmlWebpackExcludeAssetsPlugin()
   ],
+  devServer: {
+    contentBase: './demo'
+  },
   module: {
     rules: [
       {
@@ -48,5 +55,8 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx']
   },
-  devtool: 'source-map'
+  devtool: 'inline-source-map',
+  node: {
+   fs: 'empty'
+  }
 };
