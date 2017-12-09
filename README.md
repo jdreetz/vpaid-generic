@@ -1,3 +1,5 @@
+![Travis Status](https://travis-ci.org/jdreetz/vpaid-generic.svg?branch=master)
+
 # VPAID Generic
 
 A generic implementation of the [VPAID 2.0 spec](http://www.iab.net/media/file/VPAID_2.0_Final_04-10-2012.pdf) in ES6 Javascript. By default, it includes a HTML5 video player that handles playback of a specified creative, an overlay manager that handles click events, and an AdParameters parser that parses a JSON string from creativeData.AdParameters. The video player, overlay handler, and parser can all be substituted for subclasses in the `VPAIDInterface` constructor. 
