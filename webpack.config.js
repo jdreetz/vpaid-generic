@@ -1,8 +1,7 @@
 const path = require('path'), 
       HTMLWebpackPlugin = require('html-webpack-plugin'),
       HTMLWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin'),
-      HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin'),
-      ExtractTextPlugin = require('extract-text-webpack-plugin');
+      HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 
 const paths = {
   DEMO: path.resolve(__dirname, 'demo'),
