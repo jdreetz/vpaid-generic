@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -83,48 +83,11 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var AD_LOADED = exports.AD_LOADED = 'AdLoaded';
-var AD_STARTED = exports.AD_STARTED = 'AdStarted';
-var AD_STOPPED = exports.AD_STOPPED = 'AdStopped';
-var AD_SKIPPED = exports.AD_SKIPPED = 'AdSkipped';
-var AD_SKIPPABLE_STATE_CHANGE = exports.AD_SKIPPABLE_STATE_CHANGE = 'AdSkippableStateChange';
-var AD_SIZE_CHANGE = exports.AD_SIZE_CHANGE = 'AdSizeChange';
-var AD_LINEAR_CHANGE = exports.AD_LINEAR_CHANGE = 'AdLinearChange';
-var AD_DURATION_CHANGE = exports.AD_DURATION_CHANGE = 'AdDurationChange';
-var AD_EXPANDED_CHANGE = exports.AD_EXPANDED_CHANGE = 'AdExpandedChange';
-var AD_REMAINING_TIME_CHANGE = exports.AD_REMAINING_TIME_CHANGE = 'AdRemainingTimeChange';
-var AD_VOLUME_CHANGE = exports.AD_VOLUME_CHANGE = 'AdVolumeChange';
-var AD_IMPRESSION = exports.AD_IMPRESSION = 'AdImpression';
-var AD_VIDEO_START = exports.AD_VIDEO_START = 'AdVideoStart';
-var AD_VIDEO_FIRST_QUARTILE = exports.AD_VIDEO_FIRST_QUARTILE = 'AdVideoFirstQuartile';
-var AD_VIDEO_MIDPOINT = exports.AD_VIDEO_MIDPOINT = 'AdVideoMidpoint';
-var AD_VIDEO_THIRD_QUARTILE = exports.AD_VIDEO_THIRD_QUARTILE = 'AdVideoThirdQuartile';
-var AD_VIDEO_COMPLETE = exports.AD_VIDEO_COMPLETE = 'AdVideoComplete';
-var AD_CLICK_THRU = exports.AD_CLICK_THRU = 'AdClickThru';
-var AD_INTERACTION = exports.AD_INTERACTION = 'AdInteraction';
-var AD_USER_ACCEPT_INVITATION = exports.AD_USER_ACCEPT_INVITATION = 'AdUserAcceptInvitation';
-var AD_USER_MINIMIZE = exports.AD_USER_MINIMIZE = 'AdUserMinimize';
-var AD_USER_CLOSE = exports.AD_USER_CLOSE = 'AdUserClose';
-var AD_PAUSED = exports.AD_PAUSED = 'AdPaused';
-var AD_PLAYING = exports.AD_PLAYING = 'AdPlaying';
-var AD_LOG = exports.AD_LOG = 'AdLog';
-var AD_ERROR = exports.AD_ERROR = 'AdError';
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.Listenable = exports.Observable = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _PubSub = __webpack_require__(9);
+var _PubSub = __webpack_require__(10);
 
 var _PubSub2 = _interopRequireDefault(_PubSub);
 
@@ -222,6 +185,43 @@ var Listenable = exports.Listenable = function Listenable(subject) {
 };
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var AD_LOADED = exports.AD_LOADED = 'AdLoaded';
+var AD_STARTED = exports.AD_STARTED = 'AdStarted';
+var AD_STOPPED = exports.AD_STOPPED = 'AdStopped';
+var AD_SKIPPED = exports.AD_SKIPPED = 'AdSkipped';
+var AD_SKIPPABLE_STATE_CHANGE = exports.AD_SKIPPABLE_STATE_CHANGE = 'AdSkippableStateChange';
+var AD_SIZE_CHANGE = exports.AD_SIZE_CHANGE = 'AdSizeChange';
+var AD_LINEAR_CHANGE = exports.AD_LINEAR_CHANGE = 'AdLinearChange';
+var AD_DURATION_CHANGE = exports.AD_DURATION_CHANGE = 'AdDurationChange';
+var AD_EXPANDED_CHANGE = exports.AD_EXPANDED_CHANGE = 'AdExpandedChange';
+var AD_REMAINING_TIME_CHANGE = exports.AD_REMAINING_TIME_CHANGE = 'AdRemainingTimeChange';
+var AD_VOLUME_CHANGE = exports.AD_VOLUME_CHANGE = 'AdVolumeChange';
+var AD_IMPRESSION = exports.AD_IMPRESSION = 'AdImpression';
+var AD_VIDEO_START = exports.AD_VIDEO_START = 'AdVideoStart';
+var AD_VIDEO_FIRST_QUARTILE = exports.AD_VIDEO_FIRST_QUARTILE = 'AdVideoFirstQuartile';
+var AD_VIDEO_MIDPOINT = exports.AD_VIDEO_MIDPOINT = 'AdVideoMidpoint';
+var AD_VIDEO_THIRD_QUARTILE = exports.AD_VIDEO_THIRD_QUARTILE = 'AdVideoThirdQuartile';
+var AD_VIDEO_COMPLETE = exports.AD_VIDEO_COMPLETE = 'AdVideoComplete';
+var AD_CLICK_THRU = exports.AD_CLICK_THRU = 'AdClickThru';
+var AD_INTERACTION = exports.AD_INTERACTION = 'AdInteraction';
+var AD_USER_ACCEPT_INVITATION = exports.AD_USER_ACCEPT_INVITATION = 'AdUserAcceptInvitation';
+var AD_USER_MINIMIZE = exports.AD_USER_MINIMIZE = 'AdUserMinimize';
+var AD_USER_CLOSE = exports.AD_USER_CLOSE = 'AdUserClose';
+var AD_PAUSED = exports.AD_PAUSED = 'AdPaused';
+var AD_PLAYING = exports.AD_PLAYING = 'AdPlaying';
+var AD_LOG = exports.AD_LOG = 'AdLog';
+var AD_ERROR = exports.AD_ERROR = 'AdError';
+
+/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -231,42 +231,47 @@ var Listenable = exports.Listenable = function Listenable(subject) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _class;
+
+var _Behaviors = __webpack_require__(0);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var BaseCreative = function () {
+var BaseCreative = (0, _Behaviors.Observable)(_class = function () {
   function BaseCreative() {
     _classCallCheck(this, BaseCreative);
   }
 
   _createClass(BaseCreative, [{
-    key: "destroy",
+    key: 'destroy',
     value: function destroy() {}
   }, {
-    key: "publish",
+    key: 'publish',
     value: function publish() {}
   }, {
-    key: "subscribe",
+    key: 'subscribe',
     value: function subscribe() {}
   }, {
-    key: "unsubscribe",
+    key: 'unsubscribe',
     value: function unsubscribe() {}
   }, {
-    key: "duration",
+    key: 'duration',
     get: function get() {
       return -2;
     }
   }, {
-    key: "remaining",
+    key: 'remaining',
     get: function get() {
       return -2;
     }
   }]);
 
   return BaseCreative;
-}();
+}()) || _class;
 
 exports.default = BaseCreative;
 
@@ -280,40 +285,45 @@ exports.default = BaseCreative;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _class;
+
+var _Behaviors = __webpack_require__(0);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var BaseOverlay = function () {
+var BaseOverlay = (0, _Behaviors.Observable)(_class = function () {
   function BaseOverlay() {
     _classCallCheck(this, BaseOverlay);
   }
 
   _createClass(BaseOverlay, [{
-    key: "setSize",
+    key: 'setSize',
     value: function setSize() {}
   }, {
-    key: "generateControls",
+    key: 'generateControls',
     value: function generateControls() {
       return document.createDocumentFragment();
     }
   }, {
-    key: "destroy",
+    key: 'destroy',
     value: function destroy() {}
   }, {
-    key: "publish",
+    key: 'publish',
     value: function publish() {}
   }, {
-    key: "subscribe",
+    key: 'subscribe',
     value: function subscribe() {}
   }, {
-    key: "unsubscribe",
+    key: 'unsubscribe',
     value: function unsubscribe() {}
   }]);
 
   return BaseOverlay;
-}();
+}()) || _class;
 
 exports.default = BaseOverlay;
 
@@ -359,12 +369,15 @@ exports.default = BaseParser;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Behaviors = __webpack_require__(1);
+var _class;
 
-var _VPAIDEvents = __webpack_require__(0);
+var _Behaviors = __webpack_require__(0);
+
+var _VPAIDEvents = __webpack_require__(1);
 
 var VPAIDEvents = _interopRequireWildcard(_VPAIDEvents);
 
@@ -383,7 +396,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 // Simple overlay class. Handles clicks. Can be overriden to provide more complicated user interface
-var SimpleControls = function (_BaseOverlay) {
+var SimpleControls = (0, _Behaviors.Listenable)(_class = function (_BaseOverlay) {
   _inherits(SimpleControls, _BaseOverlay);
 
   function SimpleControls(slotEl, _ref, _ref2) {
@@ -439,10 +452,7 @@ var SimpleControls = function (_BaseOverlay) {
   }]);
 
   return SimpleControls;
-}(_BaseOverlay3.default);
-
-SimpleControls = (0, _Behaviors.Observable)(SimpleControls);
-SimpleControls = (0, _Behaviors.Listenable)(SimpleControls);
+}(_BaseOverlay3.default)) || _class;
 
 exports.default = SimpleControls;
 
@@ -456,6 +466,7 @@ exports.default = SimpleControls;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -502,12 +513,15 @@ exports.default = JSONParser;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Behaviors = __webpack_require__(1);
+var _class;
 
-var _VPAIDEvents = __webpack_require__(0);
+var _Behaviors = __webpack_require__(0);
+
+var _VPAIDEvents = __webpack_require__(1);
 
 var VPAIDEvents = _interopRequireWildcard(_VPAIDEvents);
 
@@ -525,7 +539,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var VideoAd = function (_BaseCreative) {
+var VideoAd = (0, _Behaviors.Listenable)(_class = function (_BaseCreative) {
   _inherits(VideoAd, _BaseCreative);
 
   function VideoAd(videoEl, _ref, parentInterface) {
@@ -613,10 +627,7 @@ var VideoAd = function (_BaseCreative) {
   }]);
 
   return VideoAd;
-}(_BaseCreative3.default);
-
-VideoAd = (0, _Behaviors.Observable)(VideoAd);
-VideoAd = (0, _Behaviors.Listenable)(VideoAd);
+}(_BaseCreative3.default)) || _class;
 
 exports.default = VideoAd;
 
@@ -627,23 +638,80 @@ exports.default = VideoAd;
 "use strict";
 
 
+var _module$exports;
+
+var _VPAIDInterface = __webpack_require__(9);
+
+var _VPAIDInterface2 = _interopRequireDefault(_VPAIDInterface);
+
+var _VPAIDEvents = __webpack_require__(1);
+
+var _VPAIDEvents2 = _interopRequireDefault(_VPAIDEvents);
+
+var _BaseCreative = __webpack_require__(2);
+
+var _BaseCreative2 = _interopRequireDefault(_BaseCreative);
+
+var _VideoAd = __webpack_require__(7);
+
+var _VideoAd2 = _interopRequireDefault(_VideoAd);
+
+var _BaseOverlay = __webpack_require__(3);
+
+var _BaseOverlay2 = _interopRequireDefault(_BaseOverlay);
+
+var _SimpleControls = __webpack_require__(5);
+
+var _SimpleControls2 = _interopRequireDefault(_SimpleControls);
+
+var _BaseParser = __webpack_require__(4);
+
+var _BaseParser2 = _interopRequireDefault(_BaseParser);
+
+var _JSONParser = __webpack_require__(6);
+
+var _JSONParser2 = _interopRequireDefault(_JSONParser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+module.exports = (_module$exports = {
+  SimpleControls: _SimpleControls2.default,
+  VPAIDInterface: _VPAIDInterface2.default,
+  VPAIDEvents: _VPAIDEvents2.default,
+  BaseCreative: _BaseCreative2.default,
+  VideoAd: _VideoAd2.default,
+  BaseOverlay: _BaseOverlay2.default
+}, _defineProperty(_module$exports, 'SimpleControls', _SimpleControls2.default), _defineProperty(_module$exports, 'BaseParser', _BaseParser2.default), _defineProperty(_module$exports, 'JSONParser', _JSONParser2.default), _module$exports);
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Behaviors = __webpack_require__(1);
+var _class;
 
-var _Validation = __webpack_require__(10);
+var _Behaviors = __webpack_require__(0);
 
-var _VPAIDEvents = __webpack_require__(0);
+var _Validation = __webpack_require__(11);
+
+var _VPAIDEvents = __webpack_require__(1);
 
 var VPAIDEvents = _interopRequireWildcard(_VPAIDEvents);
+
+var _VPAIDDecorators = __webpack_require__(12);
 
 var _SimpleControls = __webpack_require__(5);
 
@@ -665,7 +733,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 // Implements the required VPAID interface methods and properties as per the VPAID 2.0 specification 
 // http://www.iab.net/media/file/VPAID_2.0_Final_04-10-2012.pdf
-var VPAIDInterface = function () {
+var VPAIDInterface = (0, _Behaviors.Observable)(_class = (0, _VPAIDDecorators.VPAIDMethods)(_class = (0, _VPAIDDecorators.VPAIDProperties)(_class = function () {
   function VPAIDInterface() {
     var _this = this;
 
@@ -689,27 +757,6 @@ var VPAIDInterface = function () {
   }
 
   _createClass(VPAIDInterface, [{
-    key: 'initAd',
-    value: function initAd(width, height, viewMode, desiredBitrate) {
-      var creativeData = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
-      var environmentVars = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
-
-      this.size.width = width;
-      this.size.height = height;
-      this.viewMode = viewMode;
-      this.creativeData = _extends({}, creativeData);
-      this.environmentVars = _extends({}, environmentVars);
-
-      try {
-        // parseAdParameters could be async, so we pass it through Promise.all to handle sync and async cases
-        Promise.all([this.Parser.parseAdParameters(creativeData.AdParameters)]).then(this.onAdParametersParsed.bind(this), this.onAdParseFail.bind(this));
-      } catch (e) {
-        this.onAdParseFail(e);
-      }
-
-      return this;
-    }
-  }, {
     key: 'onAdParseFail',
     value: function onAdParseFail(e) {
       console.log(e);
@@ -730,8 +777,8 @@ var VPAIDInterface = function () {
 
       // Allow Ad and Overlays to publish any of the available standard VPAID events
       Object.values(VPAIDEvents).forEach(function (EVENT_NAME) {
-        _this2.ad.subscribe(_this2.onCreativeEvent.bind(_this2, EVENT_NAME), EVENT_NAME);
-        _this2.overlays.subscribe(_this2.onOverlayEvent.bind(_this2, EVENT_NAME), EVENT_NAME);
+        _this2.ad && _this2.ad.subscribe && _this2.ad.subscribe(_this2.onCreativeEvent.bind(_this2, EVENT_NAME), EVENT_NAME);
+        _this2.overlays && _this2.overlays.subscribe && _this2.overlays.subscribe(_this2.onOverlayEvent.bind(_this2, EVENT_NAME), EVENT_NAME);
       });
 
       this.publish(VPAIDEvents.AD_LOADED);
@@ -747,142 +794,6 @@ var VPAIDInterface = function () {
       this.publish(name);
     }
   }, {
-    key: 'startAd',
-    value: function startAd() {
-      this.skippable = true;
-      this.publish(VPAIDEvents.AD_IMPRESSION);
-      this.publish(VPAIDEvents.AD_STARTED);
-      this.publish(VPAIDEvents.AD_VIDEO_START);
-      this.publish(VPAIDEvents.AD_SKIPPABLE_STATE_CHANGE);
-      return this;
-    }
-  }, {
-    key: 'skipAd',
-    value: function skipAd() {
-      this.publish(VPAIDEvents.AD_SKIPPED);
-      return this;
-    }
-  }, {
-    key: 'stopAd',
-    value: function stopAd() {
-      if (this.ad) {
-        this.ad.destroy();
-      }
-
-      this.publish(VPAIDEvents.AD_STOPPED);
-      return this;
-    }
-  }, {
-    key: 'pauseAd',
-    value: function pauseAd() {
-      if (this.ad) {
-        this.ad.videoEl.pause();
-      }
-
-      this.publish(VPAIDEvents.AD_PAUSED);
-      return this;
-    }
-  }, {
-    key: 'resumeAd',
-    value: function resumeAd() {
-      if (this.ad) {
-        this.ad.videoEl.play();
-      }
-
-      this.publish(VPAIDEvents.AD_PLAYING);
-      return this;
-    }
-  }, {
-    key: 'collapseAd',
-    value: function collapseAd() {
-      this.expanded = false;
-      this.publish(VPAIDEvents.AD_EXPANDED_CHANGE);
-      return this;
-    }
-  }, {
-    key: 'expandAd',
-    value: function expandAd() {
-      this.expanded = true;
-      this.publish(VPAIDEvents.AD_EXPANDED_CHANGE);
-      return this;
-    }
-  }, {
-    key: 'resizeAd',
-    value: function resizeAd(width, height, viewMode) {
-      this.size.width = width;
-      this.size.height = height;
-      this.viewMode = viewMode;
-
-      if (this.overlays) {
-        this.overlays.setSize(width, height);
-      }
-
-      this.publish(VPAIDEvents.AD_SIZE_CHANGE);
-      return this;
-    }
-  }, {
-    key: 'getAdExpanded',
-    value: function getAdExpanded() {
-      return this.expanded;
-    }
-  }, {
-    key: 'getAdLinear',
-    value: function getAdLinear() {
-      return true;
-    }
-  }, {
-    key: 'getAdDuration',
-    value: function getAdDuration() {
-      return this.ad ? this.ad.duration : -2;
-    }
-  }, {
-    key: 'getAdRemainingTime',
-    value: function getAdRemainingTime() {
-      return this.ad ? this.ad.remaining : -2;
-    }
-  }, {
-    key: 'getAdSkippableState',
-    value: function getAdSkippableState() {
-      return this.skippable;
-    }
-  }, {
-    key: 'getAdVolume',
-    value: function getAdVolume() {
-      return this.ad ? this.ad.volume : 0;
-    }
-  }, {
-    key: 'getAdCompanions',
-    value: function getAdCompanions() {
-      return '';
-    }
-  }, {
-    key: 'getAdIcons',
-    value: function getAdIcons() {
-      return false;
-    }
-  }, {
-    key: 'getAdHeight',
-    value: function getAdHeight() {
-      return this.size.height;
-    }
-  }, {
-    key: 'getAdWidth',
-    value: function getAdWidth() {
-      return this.size.width;
-    }
-  }, {
-    key: 'handshakeVersion',
-    value: function handshakeVersion() {
-      return '2.0';
-    }
-  }, {
-    key: 'setAdVolume',
-    value: function setAdVolume(vol) {
-      if (this.ad) {
-        this.ad.volume = vol;
-      }
-    }
-  }, {
     key: 'destroy',
     value: function destroy() {
       if (this.ad && typeof this.ad.destroy == 'function') {
@@ -896,15 +807,12 @@ var VPAIDInterface = function () {
   }]);
 
   return VPAIDInterface;
-}();
-
-VPAIDInterface = (0, _Behaviors.Observable)(VPAIDInterface);
-VPAIDInterface = (0, _Behaviors.Listenable)(VPAIDInterface);
+}()) || _class) || _class) || _class;
 
 exports.default = VPAIDInterface;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -1357,7 +1265,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1423,58 +1331,270 @@ var ValidParser = exports.ValidParser = function ValidParser(subject) {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _module$exports;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.VPAIDProperties = exports.VPAIDMethods = undefined;
 
-var _VPAIDInterface = __webpack_require__(8);
+var _VPAIDMethods = __webpack_require__(13);
 
-var _VPAIDInterface2 = _interopRequireDefault(_VPAIDInterface);
+var _VPAIDMethods2 = _interopRequireDefault(_VPAIDMethods);
 
-var _VPAIDEvents = __webpack_require__(0);
+var _VPAIDProperties = __webpack_require__(14);
 
-var _VPAIDEvents2 = _interopRequireDefault(_VPAIDEvents);
-
-var _BaseCreative = __webpack_require__(2);
-
-var _BaseCreative2 = _interopRequireDefault(_BaseCreative);
-
-var _VideoAd = __webpack_require__(7);
-
-var _VideoAd2 = _interopRequireDefault(_VideoAd);
-
-var _BaseOverlay = __webpack_require__(3);
-
-var _BaseOverlay2 = _interopRequireDefault(_BaseOverlay);
-
-var _SimpleControls = __webpack_require__(5);
-
-var _SimpleControls2 = _interopRequireDefault(_SimpleControls);
-
-var _BaseParser = __webpack_require__(4);
-
-var _BaseParser2 = _interopRequireDefault(_BaseParser);
-
-var _JSONParser = __webpack_require__(6);
-
-var _JSONParser2 = _interopRequireDefault(_JSONParser);
+var _VPAIDProperties2 = _interopRequireDefault(_VPAIDProperties);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+exports.VPAIDMethods = _VPAIDMethods2.default;
+exports.VPAIDProperties = _VPAIDProperties2.default;
 
-module.exports = (_module$exports = {
-  SimpleControls: _SimpleControls2.default,
-  VPAIDInterface: _VPAIDInterface2.default,
-  VPAIDEvents: _VPAIDEvents2.default,
-  BaseCreative: _BaseCreative2.default,
-  VideoAd: _VideoAd2.default,
-  BaseOverlay: _BaseOverlay2.default
-}, _defineProperty(_module$exports, 'SimpleControls', _SimpleControls2.default), _defineProperty(_module$exports, 'BaseParser', _BaseParser2.default), _defineProperty(_module$exports, 'JSONParser', _JSONParser2.default), _module$exports);
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _VPAIDEvents = __webpack_require__(1);
+
+var VPAIDEvents = _interopRequireWildcard(_VPAIDEvents);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+exports.default = function (subject) {
+  return function (_subject) {
+    _inherits(_class, _subject);
+
+    function _class() {
+      _classCallCheck(this, _class);
+
+      return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+    }
+
+    _createClass(_class, [{
+      key: 'initAd',
+      value: function initAd(width, height, viewMode, desiredBitrate) {
+        var creativeData = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+        var environmentVars = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
+
+        if (this.size) {
+          this.size.width = width;
+          this.size.height = height;
+        };
+        this.viewMode = viewMode;
+        this.creativeData = _extends({}, creativeData);
+        this.environmentVars = _extends({}, environmentVars);
+
+        try {
+          // parseAdParameters could be async, so we pass it through Promise.all to handle sync and async cases
+          Promise.all([this.Parser.parseAdParameters(creativeData.AdParameters)]).then(this.onAdParametersParsed.bind(this), this.onAdParseFail.bind(this));
+        } catch (e) {
+          this.onAdParseFail(e);
+        }
+
+        return this;
+      }
+    }, {
+      key: 'startAd',
+      value: function startAd() {
+        this.skippable = true;
+        this.publish(VPAIDEvents.AD_IMPRESSION);
+        this.publish(VPAIDEvents.AD_STARTED);
+        this.publish(VPAIDEvents.AD_VIDEO_START);
+        this.publish(VPAIDEvents.AD_SKIPPABLE_STATE_CHANGE);
+        return this;
+      }
+    }, {
+      key: 'skipAd',
+      value: function skipAd() {
+        this.publish(VPAIDEvents.AD_SKIPPED);
+        return this;
+      }
+    }, {
+      key: 'stopAd',
+      value: function stopAd() {
+        if (this.ad && typeof this.ad.destroy == 'function') {
+          this.ad.destroy();
+        }
+        if (this.overlays && typeof this.overlays.destroy == 'function') {
+          this.overlays.destroy();
+        }
+        this.publish(VPAIDEvents.AD_STOPPED);
+        return this;
+      }
+    }, {
+      key: 'pauseAd',
+      value: function pauseAd() {
+        if (this.ad) {
+          this.ad.videoEl.pause();
+        }
+
+        this.publish(VPAIDEvents.AD_PAUSED);
+        return this;
+      }
+    }, {
+      key: 'resumeAd',
+      value: function resumeAd() {
+        if (this.ad) {
+          this.ad.videoEl.play();
+        }
+
+        this.publish(VPAIDEvents.AD_PLAYING);
+        return this;
+      }
+    }, {
+      key: 'collapseAd',
+      value: function collapseAd() {
+        this.expanded = false;
+        this.publish(VPAIDEvents.AD_EXPANDED_CHANGE);
+        return this;
+      }
+    }, {
+      key: 'expandAd',
+      value: function expandAd() {
+        this.expanded = true;
+        this.publish(VPAIDEvents.AD_EXPANDED_CHANGE);
+        return this;
+      }
+    }, {
+      key: 'resizeAd',
+      value: function resizeAd(width, height, viewMode) {
+        if (this.size) {
+          this.size.width = width;
+          this.size.height = height;
+        }
+        this.viewMode = viewMode;
+
+        if (this.overlays) {
+          this.overlays.setSize(width, height);
+        }
+
+        this.publish(VPAIDEvents.AD_SIZE_CHANGE);
+        return this;
+      }
+    }]);
+
+    return _class;
+  }(subject);
+};
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+exports.default = function (subject) {
+  return function (_subject) {
+    _inherits(_class, _subject);
+
+    function _class() {
+      _classCallCheck(this, _class);
+
+      return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+    }
+
+    _createClass(_class, [{
+      key: 'getAdExpanded',
+      value: function getAdExpanded() {
+        return this.expanded;
+      }
+    }, {
+      key: 'getAdLinear',
+      value: function getAdLinear() {
+        return true;
+      }
+    }, {
+      key: 'getAdDuration',
+      value: function getAdDuration() {
+        return this.ad ? this.ad.duration : -2;
+      }
+    }, {
+      key: 'getAdRemainingTime',
+      value: function getAdRemainingTime() {
+        return this.ad ? this.ad.remaining : -2;
+      }
+    }, {
+      key: 'getAdSkippableState',
+      value: function getAdSkippableState() {
+        return this.skippable;
+      }
+    }, {
+      key: 'getAdVolume',
+      value: function getAdVolume() {
+        return this.ad ? this.ad.volume : 0;
+      }
+    }, {
+      key: 'getAdCompanions',
+      value: function getAdCompanions() {
+        return '';
+      }
+    }, {
+      key: 'getAdIcons',
+      value: function getAdIcons() {
+        return false;
+      }
+    }, {
+      key: 'getAdHeight',
+      value: function getAdHeight() {
+        return this.size && this.size.height;
+      }
+    }, {
+      key: 'getAdWidth',
+      value: function getAdWidth() {
+        return this.size && this.size.width;
+      }
+    }, {
+      key: 'handshakeVersion',
+      value: function handshakeVersion() {
+        return '2.0';
+      }
+    }, {
+      key: 'setAdVolume',
+      value: function setAdVolume(vol) {
+        if (this.ad) {
+          this.ad.volume = vol;
+        }
+      }
+    }]);
+
+    return _class;
+  }(subject);
+};
 
 /***/ })
 /******/ ]);

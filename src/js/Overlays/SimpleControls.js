@@ -4,7 +4,8 @@ import BaseOverlay from './BaseOverlay';
 
 
 // Simple overlay class. Handles clicks. Can be overriden to provide more complicated user interface
-class SimpleControls extends BaseOverlay {
+@Listenable
+export default class SimpleControls extends BaseOverlay {
   constructor(slotEl, { clickThrough }, { size }) {
     super();
 
@@ -43,8 +44,3 @@ class SimpleControls extends BaseOverlay {
     this.unregisterAll();
   }
 }
-
-SimpleControls = Observable(SimpleControls);
-SimpleControls = Listenable(SimpleControls);
-
-export default SimpleControls;

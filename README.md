@@ -5,7 +5,7 @@ A generic implementation of the [VPAID 2.0 spec](http://www.iab.net/media/file/V
 ### Setup and building
 * `npm install`
 * Build: `npm run build`
-* Dev: `npm run dev` hosts IMA-VPAID-Host.html at http://localhost:8080/
+* Dev: `npm run dev` hosts IMA-VPAID-Host.html at http://localhost:8080/IMA-VPAID-Host.html
 
 ### Extension
 The library can be extended or overriden in several ways. `VPAIDInterface` is the main entry point to the library. It implements the required VPAID interface methods and exposes the `getVPAIDAd` function on a window object if one is supplied to the constructor. The constructor looks for an object with the following configuration options:
