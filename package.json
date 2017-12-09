@@ -1,7 +1,11 @@
 {
-  "name": "minimal-vpaid",
+  "name": "vpaid-generic",
   "version": "1.0.0",
-  "description": "",
+  "description": "A generic implementation of the VPAID 2.0 spec in ES6 Javascript",
+  "repository": { 
+    "type": "git",
+    "url": "https://github.com/jdreetz/vpaid-generic"
+  },
   "main": "./dist/index.bundle.js",
   "scripts": {
     "build": "webpack",
@@ -9,9 +13,9 @@
     "test": "./node_modules/.bin/babel-tape-runner test/*.js",
     "prepublish": "npm run build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["vpaid", "adtech", "video", "IAB"],
+  "author": "James Reetzke",
+  "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
