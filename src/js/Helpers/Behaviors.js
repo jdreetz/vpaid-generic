@@ -19,6 +19,14 @@ export const Observable = subject => class extends subject {
     this.pubsub.publish(event, args);
     return this;
   }
+
+  // to do - support multiple event arguments
+  publishAll(events) {
+    if(!events) { return }
+    this.pubsub = this.pubsub || new PubSub();
+    events = Array.isArray(events) ? events : [events];
+    events.forEach(this.publish.bind(this));
+  }
 };
 
 

@@ -5,7 +5,7 @@ import BaseOverlay from './BaseOverlay';
 
 // Simple overlay class. Handles clicks. Can be overriden to provide more complicated user interface
 @Listenable
-export default class SimpleControls extends BaseOverlay {
+export default class ClickThroughOverlay extends BaseOverlay {
   constructor(slotEl, { clickThrough }, { size }) {
     super();
 

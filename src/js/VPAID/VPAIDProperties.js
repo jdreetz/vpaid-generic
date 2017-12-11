@@ -20,7 +20,7 @@ export default subject => class extends subject {
   }
 
   getAdVolume() {
-   return this.ad ? this.ad.volume : 0;
+   return this.ad && !isNaN(this.ad.volume) ? this.ad.volume : -1;
   }
 
   getAdCompanions() { 
@@ -32,11 +32,11 @@ export default subject => class extends subject {
   }
 
   getAdHeight() { 
-    return this.size && this.size.height;
+    return this.size ? this.size.height : -1;
   }
 
   getAdWidth() { 
-    return this.size && this.size.width;
+    return this.size ? this.size.width : -1;
   }
 
   handshakeVersion() {

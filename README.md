@@ -14,8 +14,8 @@ A generic implementation of the [VPAID 2.0 spec](http://www.iab.net/media/file/V
 The library can be extended or overriden in several ways. `VPAIDInterface` is the main entry point to the library. It implements the required VPAID interface methods and exposes the `getVPAIDAd` function on a window object if one is supplied to the constructor. The constructor looks for an object with the following configuration options:
 
 * `window` - the window instance to attach `getVPAIDAd` to
-* `creativeFormat` - a class that is responsible for playback of the video creative and sending notifications about playback events. If none is supplied, `VideoAd` will be used. It receives the `videoSlot` property provided by the VPAID host. If a class is supplied, it must inherit from `BaseCreative` or `VideoAd` or an exception will be thrown during instantiation of VPAIDInterface. 
-* `overlays` - a class that is responsible for display of user interface elements. It receives the `slot` element from the VPAID host. If none is provided, `SimpleControls` is used. If a custom class is provided, it must inherit from `BaseOverlay` or `SimpleControls` or an exception will be thrown during instantiation of VPAIDInterface.
+* `creativeFormat` - a class that is responsible for playback of the video creative and sending notifications about playback events. If none is supplied, `VideoCreative` will be used. It receives the `videoSlot` property provided by the VPAID host. If a class is supplied, it must inherit from `BaseCreative` or `VideoCreative` or an exception will be thrown during instantiation of VPAIDInterface. 
+* `overlays` - a class that is responsible for display of user interface elements. It receives the `slot` element from the VPAID host. If none is provided, `ClickThroughOverlay` is used. If a custom class is provided, it must inherit from `BaseOverlay` or `ClickThroughOverlay` or an exception will be thrown during instantiation of VPAIDInterface.
 * `parser` - a class with a static method called `parseAdParameters` that accepts the `creativeData.AdParameters` string from the VAST tag, and returns an object of the AdParameters. If no parser is supplied, a JSON parser is used. The output object of the parser will be supplied to the configured `creativeFormat` and `overlays` classes during instantiation in `initAd`. If a custom parser class is provided, it must inherit from `BaseParser` or `JSONParser` or an exception will be thrown during instantiation of VPAIDInterface. Async and Sync `parseAdParameters` can be used. If the function is async, it must return a Promise that resolves the parsed AdParameters object.
 
 By default, all `VPAIDEvents` will be published from the `creativeFormat` and `overlays` classes to the VPAID host, via the methods `VPAIDInterface.onCreativeEvent` and `VPAIDInterface.onOverlayEvent`, respectively. If you want to intercept those events before publising to the VPAID host, extend `VPAIDInterface` and override those methods.
@@ -33,8 +33,8 @@ window.getVPAIDAd = () => instance;
 ```javascript
 // Advanced usage
 
-// Custom video class that inherits from VideoAd
-const CustomVideoAd = class extends VideoAd {
+// Custom video class that inherits from VideoCreative
+const CustomVideoCreative = class extends VideoCreative {
   constructor(..args) {
     super(...args);
       
@@ -44,8 +44,8 @@ const CustomVideoAd = class extends VideoAd {
 };
 
 
-// Custom controls class that inherits from SimpleControls
-const CustomControls = class extends SimpleControls {
+// Custom controls class that inherits from ClickThroughOverlay
+const CustomControls = class extends ClickThroughOverlay {
   generateControls() {
     const aButton = document.createElement('button');
     aButton.innerHTML = 'Foobar';
@@ -55,13 +55,13 @@ const CustomControls = class extends SimpleControls {
 }
 
 const instance = new VPAIDInterface({
-  creativeFormat: CustomVideoAd,
+  creativeFormat: CustomVideoCreative,
   overlays: CustomControls,
   window
 });
 ```
 
-See `IMA-VPAID-Host.html` for an example of interacting with the VPAID interface from [Google's IMA VPAID host](https://developers.google.com/interactive-media-ads/docs/sdks/html5/). The demo page provides a string for VAST tag that loads `demo.bundle.js` which is the bundled version of `demo.js`. `demo.js` creates an instance of VPAIDInterface and supplies just the `window` object that `getVPAIDAd` will be attached to. All other options use the defaults (`VideoAd`, `SimpleControls`, `JSONParser`);
+See `IMA-VPAID-Host.html` for an example of interacting with the VPAID interface from [Google's IMA VPAID host](https://developers.google.com/interactive-media-ads/docs/sdks/html5/). The demo page provides a string for VAST tag that loads `demo.bundle.js` which is the bundled version of `demo.js`. `demo.js` creates an instance of VPAIDInterface and supplies just the `window` object that `getVPAIDAd` will be attached to. All other options use the defaults (`VideoCreative`, `ClickThroughOverlay`, `JSONParser`);
 
 ### Testing
 ```

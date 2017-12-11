@@ -14,7 +14,7 @@ export const ValidCreative = subject => {
   if(ValidateClass(subject, BaseCreative)) {
     return true;
   } else {
-    throw 'Invalid creative provided. Should inherit from BaseCreative or VideoAd';
+    throw 'Invalid creative provided. Should inherit from BaseCreative or VideoCreative';
   }
 }
 
