@@ -4,11 +4,12 @@ var adsManager, adsLoader, adDisplayContainer, intervalTimer, playButton, skipBu
 init();
 
 function init() {
-  videoContent = document.getElementById('contentElement');
-  playButton = document.getElementById('playButton');
-  skipButton = document.getElementById('skipButton');
+  playButton             = document.getElementById('playButton');
+  skipButton             = document.getElementById('skipButton');
+  videoContent           = document.getElementById('contentElement');
+  remainingTimeDisplay   = document.getElementById('remainingTimeDisplay');
   remainingTimeContainer = document.getElementById('remainingTimeContainer');
-  remainingTimeDisplay = document.getElementById('remainingTimeDisplay');
+  
   playButton.addEventListener('click', playAds);
   skipButton.addEventListener('click', skipAds);
   fullscreenButton.addEventListener('click', fullscreenAds);
@@ -26,13 +27,9 @@ function setUpIMA() {
 
   // Request video ads.
   var adsRequest = new google.ima.AdsRequest();
-  adsRequest.adsResponse = getDemoAdTag();
+  adsRequest.adsResponse = getAdTag({ clientURL: 'demo.bundle.js' });
   adsRequest.linearAdSlotWidth = 640;
   adsRequest.linearAdSlotHeight = 400;
-
-  adsRequest.nonLinearAdSlotWidth = 640;
-  adsRequest.nonLinearAdSlotHeight = 150;
-
   adsLoader.requestAds(adsRequest);
 }
 
