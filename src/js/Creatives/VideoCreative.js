@@ -1,20 +1,16 @@
 import { Observable, Listenable } from '../Helpers/Behaviors';
 import * as VPAIDEvents from '../Enum/VPAIDEvents';
 import BaseCreative from './BaseCreative';
+import TimeUpdateHandler from './TimeUpdateHandler';
 
 @Listenable
-export default class VideoAd extends BaseCreative {
-  constructor(videoEl, { videoURL }, parentInterface) {
+export default class VideoCreative extends BaseCreative {
+  constructor(videoElement, { videoURL }, parentInterface) {
     super();
 
-    if(videoEl && videoURL) {
-      this.videoEl = videoEl;
-      this.videoURL = videoURL;
-      this.registerListener(this.videoEl, 'loadedmetadata', this.onLoadedMetaData, this);
-      this.registerListener(this.videoEl, 'timeupdate', this.onTimeUpdate, this);
-      this.videoEl.autoplay = true;
-      this.videoEl.src = videoURL;
-      this.videoEl.play();
+    if(videoElement && videoURL) {
+      this.initializeState(videoElement, videoURL);
+      this.registerEvents(videoElement);
       
       this.quartiles_fired = {
         first:    false, 
@@ -34,6 +30,44 @@ export default class VideoAd extends BaseCreative {
 
   get remaining() {
     return this.videoEl.duration ? this.videoEl.duration - this.videoEl.currentTime : -2;
+  }
+
+  get volume() {
+    if(this.videoEl) {
+      this.videoEl.volume;
+    }
+  }
+
+  set volume(v) {
+    if(this.videoEl && !isNaN(v)) {
+      this.videoEl.volume = v;
+    }
+  }
+
+  play() {
+    if(this.videoEl) {
+      this.videoEl.play();
+    }
+  }
+
+  pause() {
+    if(this.videoEl) {
+      this.videoEl.pause();
+    }
+  }
+
+  initializeState(videoElement, videoURL) {
+    this.videoEl = videoElement;
+    this.videoURL = videoURL;
+    this.videoEl.autoplay = true;
+    this.videoEl.src = videoURL;
+    this.videoEl.play();  
+  }
+
+  registerEvents(videoElement) {
+    // this.updateHandler = new 
+    this.registerListener(videoElement, 'loadedmetadata', this.onLoadedMetaData, this);
+    this.registerListener(videoElement, 'timeupdate', this.onTimeUpdate, this);
   }
 
   onLoadedMetaData() {

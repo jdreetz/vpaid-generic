@@ -2,23 +2,21 @@ import * as VPAIDEvents from '../Enum/VPAIDEvents';
 
 export default subject => class extends subject {
   initAd(width, height, viewMode, desiredBitrate, creativeData = {}, environmentVars = {}) {
-    if(this.size) { 
-      this.size.width = width;
-      this.size.height = height;
-    };
-    this.viewMode = viewMode;
-    this.creativeData = { ...creativeData };
-    this.environmentVars = { ...environmentVars };
+    this.updateStateFromInitAd({ width, height, viewMode, creativeData, environmentVars });
+    this.parseAdParameters(creativeData.AdParameters);
+    return this;
+  }
 
+  parseAdParameters(adParameters) {
     try {
       // parseAdParameters could be async, so we pass it through Promise.all to handle sync and async cases
       Promise
-        .all([this.Parser.parseAdParameters(creativeData.AdParameters)])
+        .all([this.Parser.parseAdParameters(adParameters)])
         .then(this.onAdParametersParsed.bind(this), this.onAdParseFail.bind(this));
     } catch(e) {
       this.onAdParseFail(e);
     }
-    
+
     return this;
   }
 
@@ -37,19 +35,14 @@ export default subject => class extends subject {
   }
 
   stopAd() {
-    if(this.ad && typeof this.ad.destroy == 'function') {
-      this.ad.destroy();
-    }
-    if(this.overlays && typeof this.overlays.destroy == 'function') {
-      this.overlays.destroy();
-    }
+    this.destroy && this.destroy();
     this.publish(VPAIDEvents.AD_STOPPED);
     return this;
   }
 
   pauseAd() {
     if(this.ad) {
-      this.ad.videoEl.pause();
+      this.ad.pause();
     }
 
     this.publish(VPAIDEvents.AD_PAUSED);
@@ -58,7 +51,7 @@ export default subject => class extends subject {
 
   resumeAd() {
     if(this.ad) {
-      this.ad.videoEl.play();
+      this.ad.play();
     }
 
     this.publish(VPAIDEvents.AD_PLAYING);
@@ -78,17 +71,27 @@ export default subject => class extends subject {
   }
 
   resizeAd(width, height, viewMode) {
-    if(this.size) {
-      this.size.width = width;
-      this.size.height = height;
-    }
+    this.setSize(width, height);
     this.viewMode = viewMode;
-
-    if(this.overlays) {
-      this.overlays.setSize(width, height);
-    }
-
     this.publish(VPAIDEvents.AD_SIZE_CHANGE);
     return this;
+  }
+
+  setSize(width, height) {
+    if(this.size) {
+      this.size.width  = width;
+      this.size.height = height;
+    }
+
+    if(this.adOverlay) {
+      this.adOverlay.setSize(width, height);
+    }
+  }
+
+  updateStateFromInitAd({ width, height, viewMode, creativeData, environmentVars }) {
+    this.setSize(width, height);
+    this.viewMode = viewMode;
+    this.creativeData = { ...creativeData };
+    this.environmentVars = { ...environmentVars };
   }
 }

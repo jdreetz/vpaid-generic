@@ -27,7 +27,7 @@ test('Tests ValidCreative', assert => {
   try {
     ValidCreative(C);
   } catch(e) {
-    assert.equal(e.toString(), 'Invalid creative provided. Should inherit from BaseCreative or VideoAd', 'Should throw error when class does not inherit from BaseCreative');
+    assert.equal(e.toString(), 'Invalid creative provided. Should inherit from BaseCreative or VideoCreative', 'Should throw error when class does not inherit from BaseCreative');
     assert.end();
   }  
 });

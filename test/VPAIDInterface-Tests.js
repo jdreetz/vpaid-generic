@@ -4,9 +4,9 @@ import { Observable } from '../src/js/Helpers/Behaviors.js';
 import * as VPAIDEvents from '../src/js/Enum/VPAIDEvents.js';
 import VPAIDInterface from '../src/js/VPAIDInterface.js';
 import BaseCreative from '../src/js/Creatives/BaseCreative';
-import VideoAd from '../src/js/Creatives/VideoAd';
+import VideoCreative from '../src/js/Creatives/VideoCreative';
 import BaseOverlay from '../src/js/Overlays/BaseOverlay';
-import SimpleControls from '../src/js/Overlays/SimpleControls';
+import ClickThroughOverlay from '../src/js/Overlays/ClickThroughOverlay';
 import BaseParser from '../src/js/Parsers/BaseParser';
 import JSONParser from '../src/js/Parsers/JSONParser';
 
@@ -72,10 +72,8 @@ test('can pause ad', assert => {
   let adPaused = false;
 
   instance.ad = { 
-    videoEl: { 
-      pause() { 
-        adPaused = true 
-      }
+    pause() {
+      adPaused = true;
     }
   };
 
@@ -93,10 +91,8 @@ test('can resume ad', assert => {
   let adResumed = false;
 
   instance.ad = { 
-    videoEl: { 
-      play() { 
-        adResumed = true 
-      }
+    play() {  
+      adResumed = true;
     }
   };
 
@@ -135,7 +131,7 @@ test('can expandAd', assert => {
 
 test('can resizeAd', assert => {
   const instance = new VPAIDInterface();
-  instance.overlays = {
+  instance.adOverlay = {
     setSize(w, h) {
       this.width = w;
       this.height = h;
@@ -146,7 +142,7 @@ test('can resizeAd', assert => {
     assert.equal(instance.size.width, 300, 'Should set width of VPAIDInterface');
     assert.equal(instance.size.height, 250, 'Should set height of VPAIDInterface');
     assert.equal(instance.viewMode, 'foo', 'Should set viewmode');
-    assert.ok(instance.overlays.width === 300 && instance.overlays.height === 250, 'Should call setSize on the overlays');
+    assert.ok(instance.adOverlay.width === 300 && instance.adOverlay.height === 250, 'Should call setSize on the overlays');
     assert.ok('Should publish AdSizeChange when resizeAd is called');
     assert.end();
   }, VPAIDEvents.AD_SIZE_CHANGE);
@@ -179,7 +175,7 @@ test('can access VPAIDInterface properties via getters', assert => {
   assert.equal(instance.getAdSkippableState(), true, 'Should return the current skippable state');
 
   delete instance.ad;
-  assert.equal(instance.getAdVolume(), 0, 'Should return zero if ad not available');
+  assert.equal(instance.getAdVolume(), -1, 'Should return -1 if ad not available');
   instance.ad = { volume: 1 };
   assert.equal(instance.getAdVolume(), 1, 'Should return ad volume if ad available');
 
@@ -205,11 +201,11 @@ test('getVPAIDAd is attached to supplied window param', assert => {
 
 test('Should allow custom Ad, overlays, and parser', assert => {
   // ToDo fix tests. Class validation not working in tape, but works in browser
-  const creativeFormat = VideoAd, overlays = SimpleControls, parser = JSONParser;
+  const creativeFormat = VideoCreative, overlays = ClickThroughOverlay, parser = JSONParser;
   const instance = new VPAIDInterface({ creativeFormat, overlays, parser });
 
-  assert.equal(instance.AdCreativeType, creativeFormat, 'Should use creativeFormat passed in');
-  assert.equal(instance.OverlayType, overlays, 'Should use overlay class passed in');
+  assert.equal(instance.AdCreative, creativeFormat, 'Should use creativeFormat passed in');
+  assert.equal(instance.Overlay, overlays, 'Should use overlay class passed in');
   assert.equal(instance.Parser, parser, 'Should use parser class passed in');
 
   assert.end();
