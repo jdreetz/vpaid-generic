@@ -1,15 +1,14 @@
 export default class TimeEvent {
-  constructor(eventName, eventTime, publisher) {
+  constructor(eventName, eventTime) {
     this.eventName = eventName;
     this.eventTime = eventTime;
-    this.publish = publisher;
     this.fired = false;
   }
 
-  onTimeUpdate(currentTime) {
+  didEventOccur(currentTime) {
     if(!this.fired && currentTime > this.eventTime) {
       this.fired = true;
-      this.publish(this.eventName);
+      return this.eventName;
     }
   }
 }
