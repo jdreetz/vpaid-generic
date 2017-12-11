@@ -11,14 +11,6 @@ export default class VideoCreative extends BaseCreative {
     if(videoElement && videoURL) {
       this.initializeState(videoElement, videoURL);
       this.registerEvents(videoElement);
-      
-      this.quartiles_fired = {
-        first:    false, 
-        midpoint: false, 
-        third:    false, 
-        complete: false
-      };
-
     } else {
       throw 'Fatal Error - videoElement or videoURL not provided';
     }
@@ -67,41 +59,50 @@ export default class VideoCreative extends BaseCreative {
   registerEvents(videoElement) {
     // this.updateHandler = new 
     this.registerListener(videoElement, 'loadedmetadata', this.onLoadedMetaData, this);
-    this.registerListener(videoElement, 'timeupdate', this.onTimeUpdate, this);
+    // this.registerListener(videoElement, 'timeupdate', this.onTimeUpdate, this);
+    this.registerListener(videoElement, 'ended', this.onEnded, this);
   }
 
-  onLoadedMetaData() {
+  onLoadedMetaData(event) {
+    this.timeUpdateHandler = new TimeUpdateHandler(event.target.duration);
+    this.registerListener(event.target, 'timeupdate', this.timeUpdateHandler.onTimeUpdate, this.timeUpdateHandler);
     this.publish(VPAIDEvents.AD_DURATION_CHANGE);
   }
 
-  onTimeUpdate() {
-    if(this.duration !== -2 ) {
-      const quartile = this.duration / 4;
+  // onTimeUpdate() {
+  //   if(this.duration !== -2 ) {
+  //     const quartile = this.duration / 4;
 
-      if(this.videoEl.currentTime > quartile && !this.quartiles_fired.first) {
-        this.quartiles_fired.first = true;
-        this.publish(VPAIDEvents.AD_VIDEO_FIRST_QUARTILE);
-      }
+  //     if(this.videoEl.currentTime > quartile && !this.quartiles_fired.first) {
+  //       this.quartiles_fired.first = true;
+  //       this.publish(VPAIDEvents.AD_VIDEO_FIRST_QUARTILE);
+  //     }
 
-      if(this.videoEl.currentTime > this.duration / 2 && !this.quartiles_fired.midpoint) {
-        this.quartiles_fired.midpoint = true;
-        this.publish(VPAIDEvents.AD_VIDEO_MIDPOINT);
-      }
+  //     if(this.videoEl.currentTime > this.duration / 2 && !this.quartiles_fired.midpoint) {
+  //       this.quartiles_fired.midpoint = true;
+  //       this.publish(VPAIDEvents.AD_VIDEO_MIDPOINT);
+  //     }
 
-      if(this.videoEl.currentTime > quartile * 3 && !this.quartiles_fired.third) {
-        this.quartiles_fired.third = true;
-        this.publish(VPAIDEvents.AD_VIDEO_THIRD_QUARTILE);
-      }
+  //     if(this.videoEl.currentTime > quartile * 3 && !this.quartiles_fired.third) {
+  //       this.quartiles_fired.third = true;
+  //       this.publish(VPAIDEvents.AD_VIDEO_THIRD_QUARTILE);
+  //     }
 
-      if(this.videoEl.currentTime >= this.duration && !this.quartiles_fired.complete) {
-        this.quartiles_fired.complete = true;
-        this.publish(VPAIDEvents.AD_VIDEO_COMPLETE);
-        this.publish(VPAIDEvents.AD_STOPPED);
-        return;
-      }
+  //     if(this.videoEl.currentTime >= this.duration && !this.quartiles_fired.complete) {
+  //       this.quartiles_fired.complete = true;
+  //       this.publish(VPAIDEvents.AD_VIDEO_COMPLETE);
+  //       this.publish(VPAIDEvents.AD_STOPPED);
+  //       return;
+  //     }
 
-      this.publish(VPAIDEvents.AD_REMAINING_TIME_CHANGE);
-    }
+  //     this.publish(VPAIDEvents.AD_REMAINING_TIME_CHANGE);
+  //   }
+  // }
+
+  onEnded() {
+    this.publish(VPAIDEvents.AD_VIDEO_COMPLETE);
+    this.publish(VPAIDEvents.AD_STOPPED);
+    this.destory();
   }
 
   destory() {
