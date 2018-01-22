@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>VPAID Generic - Intersection Observer Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+
+    #pushDown {
+      position: absolute;
+      top: 845px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Scroll down for video ↓</h1>
+  <div id="pushDown">
+    <div id="vpaidSlot" style="width: 1127px; height: 845px; position: absolute; left: 0; top: 0;"></div>
+    <video id="publisherPlayer" style="width: 1127px; height: 845px" loop>
+      <source src="http://rmcdn.2mdn.net/Demo/vast_inspector/android.mp4"></source>
+    </video>
+  </div>
+</body>
+</html>

@@ -14,6 +14,7 @@ module.exports = {
   entry: { 
     demo: path.join(paths.DEMO, 'demo.js'),
     test: path.join(paths.TEST, 'index.js'),
+    openvv: path.join(paths.DEMO, '/OpenVV/openvv-demo.js'),
     adtag: path.join(paths.DEMO, '/Common/getAdTag.js')
   },
   output: {
@@ -25,11 +26,16 @@ module.exports = {
     new HTMLWebpackPlugin({ 
       filename: 'IMA-VPAID/IMA-VPAID-Host.html',
       template: path.join(paths.DEMO, '/IMA-VPAID/IMA-VPAID-Host.html'),
-      excludeAssets: [/test\.bundle\.js/]
+      excludeAssets: [/test\.bundle\.js/, /openvv\.bundle\.js/]
     }),
     new HTMLWebpackPlugin({
       filename: 'test.html',
-      excludeAssets: [/demo\.bundle\.js/, /adtag\.bundle\.js/]
+      excludeAssets: [/demo\.bundle\.js/, /adtag\.bundle\.js/, /openvv\.bundle\.js/]
+    }),
+    new HTMLWebpackPlugin({
+      filename: 'OpenVV/openvv-demo.html',
+      template: path.join(paths.DEMO, '/OpenVV/openvv-demo.html'),
+      excludeAssets: [/demo\.bundle\.js/, /adtag\.bundle\.js/, /test\.bundle\.js/]
     }),
     new HTMLWebpackIncludeAssetsPlugin({ 
       files: ['IMA-VPAID/IMA-VPAID-Host.html'],
